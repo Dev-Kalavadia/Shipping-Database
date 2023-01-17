@@ -257,12 +257,12 @@ function Voyages() {
                 <a>Showing {voyagesData.length} of {count} results</a>
             </div>
             <div className="d-flex justify-content-center mt-3">
-                <Button
+                {count!=voyagesData.length && <Button
 					className="cstm-btn-load me-2"
 					onClick={loadMoreData}
 				>
 					Load More
-				</Button>
+				</Button>}
             </div>
             <FooterComp />
         </div>

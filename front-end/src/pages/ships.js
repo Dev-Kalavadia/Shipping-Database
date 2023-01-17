@@ -36,6 +36,15 @@ function Ships() {
             },
         })
         .then((response) => {
+            response.data.docs.forEach((dataPoint, idx) => {
+                let tempData = dataPoint;
+                // if the arrival date exists create display string
+                if (dataPoint.otherNames) {
+                    tempData.otherNames = dataPoint.otherNames.join(", ");
+                } else {
+                    tempData.otherNames = ""
+                }
+            })
             setShipsData(response.data.docs);
             setCount(response.data.count);
             if (response.data.count / 100 > page) {
@@ -176,6 +185,15 @@ function Ships() {
 				},
 			})
 			.then((response) => {
+                response.data.docs.forEach((dataPoint, idx) => {
+                    let tempData = dataPoint;
+                    // if the arrival date exists create display string
+                    if (dataPoint.otherNames) {
+                        tempData.otherNames = dataPoint.otherNames.join(", ");
+                    } else {
+                        tempData.otherNames = ""
+                    }
+                })
                 const joinedData = shipsData.concat(response.data.docs);
 				setShipsData(joinedData);
                 setCount(response.data.count)
@@ -208,12 +226,12 @@ function Ships() {
                 <a>Showing {shipsData.length} of {count} results</a>
             </div>
             <div className="d-flex justify-content-center mt-3">
-                <Button
+                {count!=shipsData.length && <Button
 					className="cstm-btn-load me-2"
 					onClick={loadMoreData}
 				>
 					Load More
-				</Button>
+				</Button>}
             </div>
             <FooterComp />
         </div>
