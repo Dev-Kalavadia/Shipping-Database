@@ -9,6 +9,11 @@ import {useState} from "react";
 import BootstrapTable from 'react-bootstrap-table-next';
 import axios from "axios";
 
+function headerFormatter(column, colIndex) {
+    return (
+      <a href="#" className="cstm-header-link">{column.text}</a>
+    );
+}
 
 function Ships() {
 
@@ -28,7 +33,6 @@ function Ships() {
             },
         })
         .then((response) => {
-            console.log(response)
             setShipsData(response.data.docs);
             setCount(response.data.count)
         });
@@ -37,6 +41,7 @@ function Ships() {
     const columns = [{
         dataField: 'ID',
         text: 'Ship ID',
+        headerFormatter: headerFormatter,
         headerEvents: {
             onClick: (e, column, columnIndex) => {
                 setSortBy('ID');
@@ -51,6 +56,7 @@ function Ships() {
     }, {
         dataField: 'shipName',
         text: 'Ship Name',
+        headerFormatter: headerFormatter,
         headerEvents: {
             onClick: (e, column, columnIndex) => {
                 setSortBy('shipName');
@@ -64,7 +70,8 @@ function Ships() {
         },
     }, {
         dataField: 'otherNames',
-        text: 'Ship Other Names',
+        text: 'Other Ship Names',
+        headerFormatter: headerFormatter,
         headerEvents: {
             onClick: (e, column, columnIndex) => {
                 setSortBy('otherNames');
@@ -79,6 +86,7 @@ function Ships() {
     }, {
         dataField: 'type',
         text: 'Ship type',
+        headerFormatter: headerFormatter,
         headerEvents: {
             onClick: (e, column, columnIndex) => {
                 setSortBy('type');
@@ -93,6 +101,7 @@ function Ships() {
     }, {
         dataField: 'yearIn',
         text: 'Year In',
+        headerFormatter: headerFormatter,
         headerEvents: {
             onClick: (e, column, columnIndex) => {
                 setSortBy('yearIn');
@@ -107,6 +116,7 @@ function Ships() {
     }, {
         dataField: 'yearOut',
         text: 'Year Out',
+        headerFormatter: headerFormatter,
         headerEvents: {
             onClick: (e, column, columnIndex) => {
                 setSortBy('yearOut');
@@ -121,6 +131,7 @@ function Ships() {
     }, {
         dataField: 'last',
         text: 'Last Ship',
+        headerFormatter: headerFormatter,
         headerEvents: {
             onClick: (e, column, columnIndex) => {
                 setSortBy('last');
@@ -135,6 +146,7 @@ function Ships() {
     }, {
         dataField: 'measurements',
         text: 'Ship Measurements',
+        headerFormatter: headerFormatter,
         headerEvents: {
             onClick: (e, column, columnIndex) => {
                 setSortBy('measurements');

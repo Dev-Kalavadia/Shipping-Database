@@ -9,6 +9,11 @@ import {useState} from "react";
 import BootstrapTable from 'react-bootstrap-table-next';
 import axios from "axios";
 
+function headerFormatter(column, colIndex) {
+    return (
+      <a href="#" className="cstm-header-link">{column.text}</a>
+    );
+}
 
 function Places() {
 
@@ -28,7 +33,6 @@ function Places() {
             },
         })
         .then((response) => {
-            console.log(response)
             setPlacesData(response.data.docs);
             setCount(response.data.count)
         });
@@ -37,6 +41,7 @@ function Places() {
     const columns = [{
         dataField: 'name',
         text: 'Place Name',
+        headerFormatter: headerFormatter,
         headerEvents: {
             onClick: (e, column, columnIndex) => {
                 setSortBy('name');
@@ -51,6 +56,7 @@ function Places() {
     }, {
         dataField: 'modernName',
         text: 'Modern Name',
+        headerFormatter: headerFormatter,
         headerEvents: {
             onClick: (e, column, columnIndex) => {
                 setSortBy('modernName');
@@ -65,6 +71,7 @@ function Places() {
     }, {
         dataField: 'code',
         text: 'Place Code',
+        headerFormatter: headerFormatter,
         headerEvents: {
             onClick: (e, column, columnIndex) => {
                 setSortBy('code');
@@ -79,6 +86,7 @@ function Places() {
     }, {
         dataField: 'lat',
         text: 'Latitude',
+        headerFormatter: headerFormatter,
         headerEvents: {
             onClick: (e, column, columnIndex) => {
                 setSortBy('lat');
@@ -93,6 +101,7 @@ function Places() {
     }, {
         dataField: 'degr1',
         text: 'Latitude Degree',
+        headerFormatter: headerFormatter,
         headerEvents: {
             onClick: (e, column, columnIndex) => {
                 setSortBy('degr1');
@@ -107,6 +116,7 @@ function Places() {
     }, {
         dataField: 'min1',
         text: 'Latitude Min',
+        headerFormatter: headerFormatter,
         headerEvents: {
             onClick: (e, column, columnIndex) => {
                 setSortBy('min1');
@@ -121,6 +131,7 @@ function Places() {
     }, {
         dataField: 'long',
         text: 'Longitude',
+        headerFormatter: headerFormatter,
         headerEvents: {
             onClick: (e, column, columnIndex) => {
                 setSortBy('long');
@@ -135,6 +146,7 @@ function Places() {
     }, {
         dataField: 'degr2',
         text: 'Longitude Degree',
+        headerFormatter: headerFormatter,
         headerEvents: {
             onClick: (e, column, columnIndex) => {
                 setSortBy('degr2');
@@ -149,6 +161,7 @@ function Places() {
     }, {
         dataField: 'min2',
         text: 'Longitude Min',
+        headerFormatter: headerFormatter,
         headerEvents: {
             onClick: (e, column, columnIndex) => {
                 setSortBy('min2');
@@ -163,6 +176,7 @@ function Places() {
     }, {
         dataField: 'geoRef',
         text: 'Geo Reference',
+        headerFormatter: headerFormatter,
         headerEvents: {
             onClick: (e, column, columnIndex) => {
                 setSortBy('geoRef');

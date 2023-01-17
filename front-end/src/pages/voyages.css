@@ -16,3 +16,12 @@
 .sub-heading{
     font-size: 20px;
 }
+
+.cstm-header-link{
+    color: #cc2755 !important;
+    text-decoration:none;
+}
+
+.cstm-header-link:hover{
+    text-decoration:underline;
+}

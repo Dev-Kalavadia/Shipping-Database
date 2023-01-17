@@ -6,3 +6,12 @@
     width: 90%;
     margin-top: 2%;
 }
+
+.cstm-header-link{
+    color: #cc2755 !important;
+    text-decoration:none;
+}
+
+.cstm-header-link:hover{
+    text-decoration:underline;
+}

@@ -9,6 +9,12 @@ import {useState} from "react";
 import BootstrapTable from 'react-bootstrap-table-next';
 import axios from "axios";
 
+function headerFormatter(column, colIndex) {
+    return (
+      <a href="#" className="cstm-header-link">{column.text}</a>
+    );
+}
+
 function Voyages() {
 
     const [voyagesData, setVoyagesData] = useState([])
@@ -27,7 +33,23 @@ function Voyages() {
             },
         })
         .then((response) => {
-            console.log(response)
+            // Tokenize date
+            response.data.docs.forEach((dataPoint, idx) => {
+                let tempData = dataPoint;
+                if (dataPoint.arrivalDate) {
+                    console.log(dataPoint.arrivalDate)
+                    let [date1, time1] = dataPoint.arrivalDate.split("T")
+                    tempData.arrivalDate = date1
+                } else {
+                    tempData.arrivalDate = ""
+                }
+                if (dataPoint.departureDate) {
+                    let [date2, time2] = dataPoint.departureDate.split("T")
+                    tempData.departureDate = date2
+                } else {
+                    tempData.departureDate = ""
+                }
+            })
             setVoyagesData(response.data.docs);
             setCount(response.data.count)
         });
@@ -36,6 +58,7 @@ function Voyages() {
     const columns = [{
         dataField: '_id',
         text: 'Voyage Code',
+        headerFormatter: headerFormatter,
         headerEvents: {
             onClick: (e, column, columnIndex) => {
                 setSortBy('_id');
@@ -50,6 +73,7 @@ function Voyages() {
     }, {
         dataField: 'shipName',
         text: 'Ship Name',
+        headerFormatter: headerFormatter,
         headerEvents: {
             onClick: (e, column, columnIndex) => {
                 setSortBy('shipName');
@@ -64,6 +88,7 @@ function Voyages() {
     }, {
         dataField: 'ID',
         text: 'Ship Code',
+        headerFormatter: headerFormatter,
         headerEvents: {
             onClick: (e, column, columnIndex) => {
                 setSortBy('ID');
@@ -78,6 +103,7 @@ function Voyages() {
     }, {
         dataField: 'departurePlace',
         text: 'Departure Place',
+        headerFormatter: headerFormatter,
         headerEvents: {
             onClick: (e, column, columnIndex) => {
                 setSortBy('departurePlace');
@@ -92,6 +118,7 @@ function Voyages() {
     }, {
         dataField: 'depCode',
         text: 'Departure Place Code',
+        headerFormatter: headerFormatter,
         headerEvents: {
             onClick: (e, column, columnIndex) => {
                 setSortBy('depCode');
@@ -106,6 +133,7 @@ function Voyages() {
     }, {
         dataField: 'departureDate',
         text: 'Departure Date',
+        headerFormatter: headerFormatter,
         headerEvents: {
             onClick: (e, column, columnIndex) => {
                 setSortBy('departureDate');
@@ -120,6 +148,7 @@ function Voyages() {
     }, {
         dataField: 'arrivalPlace',
         text: 'Arrival Place',
+        headerFormatter: headerFormatter,
         headerEvents: {
             onClick: (e, column, columnIndex) => {
                 setSortBy('arrivalPlace');
@@ -134,6 +163,7 @@ function Voyages() {
     }, {
         dataField: 'arrCode',
         text: 'Arrival Place Code',
+        headerFormatter: headerFormatter,
         headerEvents: {
             onClick: (e, column, columnIndex) => {
                 setSortBy('arrCode');
@@ -148,6 +178,7 @@ function Voyages() {
     }, {
         dataField: 'arrivalDate',
         text: 'Arrival Date',
+        headerFormatter: headerFormatter,
         headerEvents: {
             onClick: (e, column, columnIndex) => {
                 setSortBy('arrivalDate');
@@ -161,11 +192,12 @@ function Voyages() {
         },
     }];
 
-    const getData = function () {
+    const getMoreData = function () {
         axios
 			.get(`${process.env.REACT_APP_URI}/voyages`, {
 				params: {
-					
+					sortBy: sortBy,
+                    sortType : sortType,
 				},
 			})
 			.then((response) => {
