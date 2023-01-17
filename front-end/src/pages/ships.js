@@ -16,12 +16,15 @@ function Ships() {
     const [count, setCount] = useState(0);
     const [showSearchModal, setShowSearchModal] = useState(false);
     const [showHelpModal, setShowHelpModal] = useState(false);
+    const [sortType, setSortType] = useState("asc")
+    const [sortBy, setSortBy] = useState("ID")
 
     React.useEffect(() => {
         axios
         .get(`${process.env.REACT_APP_URI}/ships`, {
             params: {
-                
+                sortBy: sortBy,
+                sortType : sortType,
             },
         })
         .then((response) => {
@@ -29,32 +32,120 @@ function Ships() {
             setShipsData(response.data.docs);
             setCount(response.data.count)
         });
-	}, []);
+	}, [sortBy, sortType]);
     
     const columns = [{
         dataField: 'ID',
-        text: 'Ship ID'
+        text: 'Ship ID',
+        headerEvents: {
+            onClick: (e, column, columnIndex) => {
+                setSortBy('ID');
+                if (sortType ==='asc'){
+                    setSortType('desc');
+                }
+                else {
+                    setSortType('asc');
+                }
+            }
+        },
     }, {
         dataField: 'shipName',
-        text: 'Ship Name'
+        text: 'Ship Name',
+        headerEvents: {
+            onClick: (e, column, columnIndex) => {
+                setSortBy('shipName');
+                if (sortType ==='asc'){
+                    setSortType('desc');
+                }
+                else {
+                    setSortType('asc');
+                }
+            }
+        },
     }, {
         dataField: 'otherNames',
-        text: 'Ship Other Names'
+        text: 'Ship Other Names',
+        headerEvents: {
+            onClick: (e, column, columnIndex) => {
+                setSortBy('otherNames');
+                if (sortType ==='asc'){
+                    setSortType('desc');
+                }
+                else {
+                    setSortType('asc');
+                }
+            }
+        },
     }, {
         dataField: 'type',
-        text: 'Ship type'
+        text: 'Ship type',
+        headerEvents: {
+            onClick: (e, column, columnIndex) => {
+                setSortBy('type');
+                if (sortType ==='asc'){
+                    setSortType('desc');
+                }
+                else {
+                    setSortType('asc');
+                }
+            }
+        },
     }, {
         dataField: 'yearIn',
-        text: 'Year In'
+        text: 'Year In',
+        headerEvents: {
+            onClick: (e, column, columnIndex) => {
+                setSortBy('yearIn');
+                if (sortType ==='asc'){
+                    setSortType('desc');
+                }
+                else {
+                    setSortType('asc');
+                }
+            }
+        },
     }, {
         dataField: 'yearOut',
-        text: 'Year Out'
+        text: 'Year Out',
+        headerEvents: {
+            onClick: (e, column, columnIndex) => {
+                setSortBy('yearOut');
+                if (sortType ==='asc'){
+                    setSortType('desc');
+                }
+                else {
+                    setSortType('asc');
+                }
+            }
+        },
     }, {
         dataField: 'last',
-        text: 'Last Ship'
+        text: 'Last Ship',
+        headerEvents: {
+            onClick: (e, column, columnIndex) => {
+                setSortBy('last');
+                if (sortType ==='asc'){
+                    setSortType('desc');
+                }
+                else {
+                    setSortType('asc');
+                }
+            }
+        },
     }, {
         dataField: 'measurements',
-        text: 'Ship Measurements'
+        text: 'Ship Measurements',
+        headerEvents: {
+            onClick: (e, column, columnIndex) => {
+                setSortBy('measurements');
+                if (sortType ==='asc'){
+                    setSortType('desc');
+                }
+                else {
+                    setSortType('asc');
+                }
+            }
+        },
     }];
       
     return (

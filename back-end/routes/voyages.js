@@ -5,9 +5,18 @@ const Voyages = require("../schema/voyages");
 
 router.get("/", async (req, res) => {
     const q = req.query;
+    let sortParam = {};
+
+    if (q.sortBy && q.sortType) {
+        sortParam = {
+            [q.sortBy]: [q.sortType],
+        }
+    }
+
     try {
         Voyages.find({})
             .limit(100)
+            .sort(sortParam)
 			.exec((err, docs) => {
 				if (err) {
 					res.json({

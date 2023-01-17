@@ -16,12 +16,15 @@ function Places() {
     const [count, setCount] = useState(0);
     const [showSearchModal, setShowSearchModal] = useState(false);
     const [showHelpModal, setShowHelpModal] = useState(false);
+    const [sortType, setSortType] = useState("asc")
+    const [sortBy, setSortBy] = useState("Name")
 
     React.useEffect(() => {
         axios
         .get(`${process.env.REACT_APP_URI}/places`, {
             params: {
-                
+                sortBy: sortBy,
+                sortType : sortType,
             },
         })
         .then((response) => {
@@ -29,38 +32,148 @@ function Places() {
             setPlacesData(response.data.docs);
             setCount(response.data.count)
         });
-	}, []);
+	}, [sortBy, sortType]);
     
     const columns = [{
-        dataField: 'Name',
-        text: 'Place Name'
+        dataField: 'name',
+        text: 'Place Name',
+        headerEvents: {
+            onClick: (e, column, columnIndex) => {
+                setSortBy('name');
+                if (sortType ==='asc'){
+                    setSortType('desc');
+                }
+                else {
+                    setSortType('asc');
+                }
+            }
+        },
     }, {
         dataField: 'modernName',
-        text: 'Modern Name'
+        text: 'Modern Name',
+        headerEvents: {
+            onClick: (e, column, columnIndex) => {
+                setSortBy('modernName');
+                if (sortType ==='asc'){
+                    setSortType('desc');
+                }
+                else {
+                    setSortType('asc');
+                }
+            }
+        },
     }, {
         dataField: 'code',
-        text: 'Place Code'
+        text: 'Place Code',
+        headerEvents: {
+            onClick: (e, column, columnIndex) => {
+                setSortBy('code');
+                if (sortType ==='asc'){
+                    setSortType('desc');
+                }
+                else {
+                    setSortType('asc');
+                }
+            }
+        },
     }, {
         dataField: 'lat',
-        text: 'Latitude'
+        text: 'Latitude',
+        headerEvents: {
+            onClick: (e, column, columnIndex) => {
+                setSortBy('lat');
+                if (sortType ==='asc'){
+                    setSortType('desc');
+                }
+                else {
+                    setSortType('asc');
+                }
+            }
+        },
     }, {
         dataField: 'degr1',
-        text: 'Latitude Degree'
+        text: 'Latitude Degree',
+        headerEvents: {
+            onClick: (e, column, columnIndex) => {
+                setSortBy('degr1');
+                if (sortType ==='asc'){
+                    setSortType('desc');
+                }
+                else {
+                    setSortType('asc');
+                }
+            }
+        },
     }, {
-        dataField: 'Min1',
-        text: 'Latitude Min'
+        dataField: 'min1',
+        text: 'Latitude Min',
+        headerEvents: {
+            onClick: (e, column, columnIndex) => {
+                setSortBy('min1');
+                if (sortType ==='asc'){
+                    setSortType('desc');
+                }
+                else {
+                    setSortType('asc');
+                }
+            }
+        },
     }, {
         dataField: 'long',
-        text: 'Longitude'
+        text: 'Longitude',
+        headerEvents: {
+            onClick: (e, column, columnIndex) => {
+                setSortBy('long');
+                if (sortType ==='asc'){
+                    setSortType('desc');
+                }
+                else {
+                    setSortType('asc');
+                }
+            }
+        },
     }, {
         dataField: 'degr2',
-        text: 'Longitude Degree'
+        text: 'Longitude Degree',
+        headerEvents: {
+            onClick: (e, column, columnIndex) => {
+                setSortBy('degr2');
+                if (sortType ==='asc'){
+                    setSortType('desc');
+                }
+                else {
+                    setSortType('asc');
+                }
+            }
+        },
     }, {
-        dataField: 'Min2',
-        text: 'Longitude Min'
+        dataField: 'min2',
+        text: 'Longitude Min',
+        headerEvents: {
+            onClick: (e, column, columnIndex) => {
+                setSortBy('min2');
+                if (sortType ==='asc'){
+                    setSortType('desc');
+                }
+                else {
+                    setSortType('asc');
+                }
+            }
+        },
     }, {
         dataField: 'geoRef',
-        text: 'Geo Reference'
+        text: 'Geo Reference',
+        headerEvents: {
+            onClick: (e, column, columnIndex) => {
+                setSortBy('geoRef');
+                if (sortType ==='asc'){
+                    setSortType('desc');
+                }
+                else {
+                    setSortType('asc');
+                }
+            }
+        },
     }];
       
     return (

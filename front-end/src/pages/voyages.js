@@ -15,12 +15,15 @@ function Voyages() {
     const [count, setCount] = useState(0);
     const [showSearchModal, setShowSearchModal] = useState(false);
     const [showHelpModal, setShowHelpModal] = useState(false);
+    const [sortType, setSortType] = useState("asc")
+    const [sortBy, setSortBy] = useState("_id")
 
     React.useEffect(() => {
         axios
         .get(`${process.env.REACT_APP_URI}/voyages`, {
             params: {
-                
+                sortBy: sortBy,
+                sortType : sortType,
             },
         })
         .then((response) => {
@@ -28,35 +31,134 @@ function Voyages() {
             setVoyagesData(response.data.docs);
             setCount(response.data.count)
         });
-	}, []);
+	}, [sortBy, sortType]);
     
     const columns = [{
         dataField: '_id',
-        text: 'Voyage Code'
+        text: 'Voyage Code',
+        headerEvents: {
+            onClick: (e, column, columnIndex) => {
+                setSortBy('_id');
+                if (sortType ==='asc'){
+                    setSortType('desc');
+                }
+                else {
+                    setSortType('asc');
+                }
+            }
+        },
     }, {
         dataField: 'shipName',
-        text: 'Ship Name'
+        text: 'Ship Name',
+        headerEvents: {
+            onClick: (e, column, columnIndex) => {
+                setSortBy('shipName');
+                if (sortType ==='asc'){
+                    setSortType('desc');
+                }
+                else {
+                    setSortType('asc');
+                }
+            }
+        },
     }, {
         dataField: 'ID',
-        text: 'Ship Code'
+        text: 'Ship Code',
+        headerEvents: {
+            onClick: (e, column, columnIndex) => {
+                setSortBy('ID');
+                if (sortType ==='asc'){
+                    setSortType('desc');
+                }
+                else {
+                    setSortType('asc');
+                }
+            }
+        },
     }, {
         dataField: 'departurePlace',
-        text: 'Departure Place'
+        text: 'Departure Place',
+        headerEvents: {
+            onClick: (e, column, columnIndex) => {
+                setSortBy('departurePlace');
+                if (sortType ==='asc'){
+                    setSortType('desc');
+                }
+                else {
+                    setSortType('asc');
+                }
+            }
+        },
     }, {
         dataField: 'depCode',
-        text: 'Departure Place Code'
+        text: 'Departure Place Code',
+        headerEvents: {
+            onClick: (e, column, columnIndex) => {
+                setSortBy('depCode');
+                if (sortType ==='asc'){
+                    setSortType('desc');
+                }
+                else {
+                    setSortType('asc');
+                }
+            }
+        },
     }, {
         dataField: 'departureDate',
-        text: 'Departure Date'
+        text: 'Departure Date',
+        headerEvents: {
+            onClick: (e, column, columnIndex) => {
+                setSortBy('departureDate');
+                if (sortType ==='asc'){
+                    setSortType('desc');
+                }
+                else {
+                    setSortType('asc');
+                }
+            }
+        },
     }, {
         dataField: 'arrivalPlace',
-        text: 'Arrival Place'
+        text: 'Arrival Place',
+        headerEvents: {
+            onClick: (e, column, columnIndex) => {
+                setSortBy('arrivalPlace');
+                if (sortType ==='asc'){
+                    setSortType('desc');
+                }
+                else {
+                    setSortType('asc');
+                }
+            }
+        },
     }, {
         dataField: 'arrCode',
-        text: 'Arrival Place Code'
+        text: 'Arrival Place Code',
+        headerEvents: {
+            onClick: (e, column, columnIndex) => {
+                setSortBy('arrCode');
+                if (sortType ==='asc'){
+                    setSortType('desc');
+                }
+                else {
+                    setSortType('asc');
+                }
+            }
+        },
     }, {
         dataField: 'arrivalDate',
-        text: 'Arrival Date'
+        text: 'Arrival Date',
+        headerEvents: {
+            onClick: (e, column, columnIndex) => {
+                setSortBy('arrivalDate');
+                if (sortType ==='asc'){
+                    setSortType('desc');
+                }
+                else {
+                    setSortType('asc');
+                }
+            }
+        },
     }];
 
     const getData = function () {
