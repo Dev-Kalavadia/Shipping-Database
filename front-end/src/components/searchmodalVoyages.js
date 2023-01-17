@@ -3,9 +3,9 @@ import {Button, Row, Col,Container, Modal} from 'react-bootstrap';
 import Form from 'react-bootstrap/Form';
 import './searchmodal.css'
 
-function SearchModalComp({show, setShow}) {
+function SearchModalComp({showSearchModal, setShowSearchModal}) {
 
-    const handleClose = () => setShow(false);
+    const handleCloseSearchModal = () => setShowSearchModal(false);
 
     const [depaPlace, setDepaPlace] = useState("")
     const [depaCodef, setDepaCodef] = useState("")
@@ -105,9 +105,9 @@ function SearchModalComp({show, setShow}) {
     return (
         <div>
             <Modal
-                show={show}
+                show={showSearchModal}
                 size="lg"
-                onHide={handleClose}
+                onHide={handleCloseSearchModal}
                 backdrop="static"
                 keyboard={false}
             >
@@ -177,7 +177,7 @@ function SearchModalComp({show, setShow}) {
                 </Modal.Body>
                 <Modal.Footer>
                 <Button variant="secondary" onClick={clearsearch}>Clear</Button>
-                <Button className="cstm-btn-search-modal" onClick={handleClose}>Search</Button>
+                <Button className="cstm-btn-search-modal" onClick={handleCloseSearchModal}>Search</Button>
                 </Modal.Footer>
             </Modal>
         </div>

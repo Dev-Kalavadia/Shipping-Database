@@ -3,9 +3,10 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import "./searchbar.css";
 
-function SearchBarComp({setShow}) {
+function SearchBarComp({setShowSearchModal, setShowHelpModal}) {
 
-	const handleShow = () => setShow(true);
+	const handleShowSearchModal = () => setShowSearchModal(true);
+	const handleShowHelpModal = () => setShowHelpModal(true);
 
 	return (
 		<div className="mt-5" style={{ display: "flex", justifyContent: "center" }}>
@@ -16,8 +17,14 @@ function SearchBarComp({setShow}) {
 					className="me-2 searchbar"
 					aria-label="Search"
 					size="lw"
-					onClick={handleShow}
+					onClick={handleShowSearchModal}
 				/>
+				<Button
+					className="cstm-btn-help me-2"
+					onClick={handleShowHelpModal}
+				>
+					Help
+				</Button>
 			</Form>
 		</div>
 	);

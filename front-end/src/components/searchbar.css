@@ -3,3 +3,15 @@
     border-color: #cc2856 !important;
     box-shadow: none;
 }
+
+.cstm-btn-help{
+    outline: none;
+    border-color: #cc2856 !important;
+    background-color: #cc2856 !important;
+    opacity:90%;
+    box-shadow: none;
+}
+
+.cstm-btn-help:hover{
+    opacity:100%;
+}
