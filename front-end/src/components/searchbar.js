@@ -23,7 +23,7 @@ function SearchBarComp({setShowSearchModal, setShowHelpModal}) {
 					className="cstm-btn-help me-2"
 					onClick={handleShowHelpModal}
 				>
-					Help
+					Need Help?
 				</Button>
 			</Form>
 		</div>

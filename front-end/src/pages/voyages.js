@@ -43,7 +43,7 @@ function Voyages() {
         dataField: 'arrivalDate',
         text: 'Arrival Date'
     }];
-      
+
     return (
         <div>
             <NavbarComp />

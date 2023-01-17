@@ -10,6 +10,7 @@
     background-color: #cc2856 !important;
     opacity:90%;
     box-shadow: none;
+    width:150px;
 }
 
 .cstm-btn-help:hover{
