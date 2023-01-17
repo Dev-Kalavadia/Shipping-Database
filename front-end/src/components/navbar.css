@@ -1,0 +1,26 @@
+.cstm-start {
+    color: #cc2755 !important;
+    opacity: 90%;
+}
+
+.cstm-start:hover {
+    opacity: 100%;
+}
+
+.cstm-link {
+    color: #000000 !important;
+    opacity: 90%;
+    font-size: 25px;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.cstm-link:hover {
+    opacity: 100%;
+    text-decoration: underline;
+}
+
+.cstm-toggle{
+    outline: none !important;
+    box-shadow: none !important;
+}
