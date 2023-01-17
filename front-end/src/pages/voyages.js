@@ -8,6 +8,7 @@ import React, { useEffect } from "react";
 import {useState} from "react";
 import BootstrapTable from 'react-bootstrap-table-next';
 import axios from "axios";
+import Button from "react-bootstrap/Button";
 
 function headerFormatter(column, colIndex) {
     return (
@@ -24,7 +25,7 @@ function Voyages() {
     const [sortType, setSortType] = useState("asc")
     const [sortBy, setSortBy] = useState("_id")
 
-    React.useEffect(() => {
+    useEffect(() => {
         axios
         .get(`${process.env.REACT_APP_URI}/voyages`, {
             params: {
@@ -192,7 +193,7 @@ function Voyages() {
         },
     }];
 
-    const getMoreData = function () {
+    const loadMoreData = function () {
         axios
 			.get(`${process.env.REACT_APP_URI}/voyages`, {
 				params: {
@@ -201,6 +202,23 @@ function Voyages() {
 				},
 			})
 			.then((response) => {
+                // Tokenize date
+                response.data.docs.forEach((dataPoint, idx) => {
+                    let tempData = dataPoint;
+                    if (dataPoint.arrivalDate) {
+                        console.log(dataPoint.arrivalDate)
+                        let [date1, time1] = dataPoint.arrivalDate.split("T")
+                        tempData.arrivalDate = date1
+                    } else {
+                        tempData.arrivalDate = ""
+                    }
+                    if (dataPoint.departureDate) {
+                        let [date2, time2] = dataPoint.departureDate.split("T")
+                        tempData.departureDate = date2
+                    } else {
+                        tempData.departureDate = ""
+                    }
+                })
 				setVoyagesData(response.data.docs);
                 setCount(response.data.count)
 			});
@@ -224,6 +242,17 @@ function Voyages() {
                     hover
                     condensed
                 />
+            </div>
+            <div className="d-flex justify-content-center mt-2">
+                <a>Showing {voyagesData.length} of {count} results</a>
+            </div>
+            <div className="d-flex justify-content-center mt-3">
+                <Button
+					className="cstm-btn-load me-2"
+					onClick={loadMoreData}
+				>
+					Load More
+				</Button>
             </div>
             <FooterComp />
         </div>

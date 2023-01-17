@@ -4,10 +4,11 @@ import SearchBarComp from "../components/searchbar";
 import SearchModalComp from "../components/searchmodalShips";
 import HelpModalComp from "../components/helpmodal";
 import "./ships.css";
-import React from "react";
+import React, { useEffect } from "react";
 import {useState} from "react";
 import BootstrapTable from 'react-bootstrap-table-next';
 import axios from "axios";
+import Button from "react-bootstrap/Button";
 
 function headerFormatter(column, colIndex) {
     return (
@@ -24,7 +25,7 @@ function Ships() {
     const [sortType, setSortType] = useState("asc")
     const [sortBy, setSortBy] = useState("ID")
 
-    React.useEffect(() => {
+    useEffect(() => {
         axios
         .get(`${process.env.REACT_APP_URI}/ships`, {
             params: {
@@ -159,6 +160,20 @@ function Ships() {
             }
         },
     }];
+
+    const loadMoreData = function () {
+        axios
+			.get(`${process.env.REACT_APP_URI}/ships`, {
+				params: {
+					sortBy: sortBy,
+                    sortType : sortType,
+				},
+			})
+			.then((response) => {
+				setShipsData(response.data.docs);
+                setCount(response.data.count)
+			});
+    }
       
     return (
         <div>
@@ -178,6 +193,17 @@ function Ships() {
                     hover
                     condensed
                 />
+            </div>
+            <div className="d-flex justify-content-center mt-2">
+                <a>Showing {shipsData.length} of {count} results</a>
+            </div>
+            <div className="d-flex justify-content-center mt-3">
+                <Button
+					className="cstm-btn-load me-2"
+					onClick={loadMoreData}
+				>
+					Load More
+				</Button>
             </div>
             <FooterComp />
         </div>

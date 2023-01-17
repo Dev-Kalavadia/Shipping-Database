@@ -15,3 +15,16 @@
 .cstm-header-link:hover{
     text-decoration:underline;
 }
+
+.cstm-btn-load{
+    outline: none;
+    border-color: #cc2856 !important;
+    background-color: #cc2856 !important;
+    opacity:90%;
+    box-shadow: none;
+    width:120px;
+}
+
+.cstm-btn-load:hover{
+    opacity:100%;
+}
