@@ -4,11 +4,25 @@ const mongoose = require("mongoose");
 const Ships = require("../schema/ships");
 
 router.get("/", async (req, res) => {
+    const q = req.query;
     try {
-        const response = await axios.get(
-            `https://my.api.mockaroo.com/mealhub.json?key=2f898fd0`
-        );
-        res.json(response.data);
+        Ships.find({})
+            .limit(100)
+			.exec((err, docs) => {
+				if (err) {
+					res.json({
+						success: false,
+					});
+				} else {
+					Ships.find({})
+						.countDocuments((err, count) => {
+							res.json({
+								docs,
+								count,
+							});
+						});
+				}
+			});
     } catch (err) {
         res.json({
             success: false,

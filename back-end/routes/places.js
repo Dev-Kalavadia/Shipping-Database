@@ -4,11 +4,25 @@ const mongoose = require("mongoose");
 const Places = require("../schema/places");
 
 router.get("/", async (req, res) => {
+    const q = req.query;
     try {
-        const response = await axios.get(
-            `https://my.api.mockaroo.com/mealhub.json?key=2f898fd0`
-        );
-        res.json(response.data);
+        Places.find({})
+            .limit(100)
+			.exec((err, docs) => {
+				if (err) {
+					res.json({
+						success: false,
+					});
+				} else {
+					Places.find({})
+						.countDocuments((err, count) => {
+							res.json({
+								docs,
+								count,
+							});
+						});
+				}
+			});
     } catch (err) {
         res.json({
             success: false,

@@ -7,13 +7,29 @@ import "./ships.css";
 import React from "react";
 import {useState} from "react";
 import BootstrapTable from 'react-bootstrap-table-next';
+import axios from "axios";
 
 
 function Ships() {
+
     const [shipsData, setShipsData] = useState([])
     const [count, setCount] = useState(0);
     const [showSearchModal, setShowSearchModal] = useState(false);
     const [showHelpModal, setShowHelpModal] = useState(false);
+
+    React.useEffect(() => {
+        axios
+        .get(`${process.env.REACT_APP_URI}/ships`, {
+            params: {
+                
+            },
+        })
+        .then((response) => {
+            console.log(response)
+            setShipsData(response.data.docs);
+            setCount(response.data.count)
+        });
+	}, []);
     
     const columns = [{
         dataField: 'ID',

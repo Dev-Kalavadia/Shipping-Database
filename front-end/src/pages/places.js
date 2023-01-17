@@ -7,13 +7,29 @@ import "./places.css";
 import React from "react";
 import {useState} from "react";
 import BootstrapTable from 'react-bootstrap-table-next';
+import axios from "axios";
 
 
 function Places() {
+
     const [placesData, setPlacesData] = useState([])
     const [count, setCount] = useState(0);
     const [showSearchModal, setShowSearchModal] = useState(false);
     const [showHelpModal, setShowHelpModal] = useState(false);
+
+    React.useEffect(() => {
+        axios
+        .get(`${process.env.REACT_APP_URI}/places`, {
+            params: {
+                
+            },
+        })
+        .then((response) => {
+            console.log(response)
+            setPlacesData(response.data.docs);
+            setCount(response.data.count)
+        });
+	}, []);
     
     const columns = [{
         dataField: 'Name',
