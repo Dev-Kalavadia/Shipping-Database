@@ -3,6 +3,9 @@ const express = require("express") // CommonJS import style!
 const app = express() // instantiate an Express object
 require("dotenv").config(); 
 
+const cors = require('cors');
+app.use(cors())
+
 const connectDB = require("./config/connectDB");
 connectDB();
 

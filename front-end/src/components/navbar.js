@@ -14,7 +14,7 @@ function NavbarComp() {
 		>
 			<Container>
 				<Navbar.Brand href="/">
-                    <a className="cstm-link">HeritageLab</a>
+                    <span className="cstm-link">HeritageLab</span>
 				</Navbar.Brand>
 				<Navbar.Toggle className="cstm-toggle" aria-controls="responsive-navbar-nav" />
 				<Navbar.Collapse id="responsive-navbar-nav">

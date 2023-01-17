@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const mongoose = require("mongoose");
+const Places = require("../schema/places");
 
 router.get("/", async (req, res) => {
     try {

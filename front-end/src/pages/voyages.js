@@ -4,9 +4,10 @@ import SearchBarComp from "../components/searchbar";
 import SearchModalComp from "../components/searchmodalVoyages";
 import HelpModalComp from "../components/helpmodal";
 import "./voyages.css";
-import React from "react";
+import React, { useEffect } from "react";
 import {useState} from "react";
 import BootstrapTable from 'react-bootstrap-table-next';
+import axios from "axios";
 
 function Voyages() {
 
@@ -14,6 +15,20 @@ function Voyages() {
     const [count, setCount] = useState(0);
     const [showSearchModal, setShowSearchModal] = useState(false);
     const [showHelpModal, setShowHelpModal] = useState(false);
+
+    React.useEffect(() => {
+        axios
+        .get(`${process.env.REACT_APP_URI}/voyages`, {
+            params: {
+                
+            },
+        })
+        .then((response) => {
+            console.log(response)
+            setVoyagesData(response.data.docs);
+            setCount(response.data.count)
+        });
+	}, []);
     
     const columns = [{
         dataField: '_id',
@@ -43,6 +58,19 @@ function Voyages() {
         dataField: 'arrivalDate',
         text: 'Arrival Date'
     }];
+
+    const getData = function () {
+        axios
+			.get(`${process.env.REACT_APP_URI}/voyages`, {
+				params: {
+					
+				},
+			})
+			.then((response) => {
+				setVoyagesData(response.data.docs);
+                setCount(response.data.count)
+			});
+    }
 
     return (
         <div>
