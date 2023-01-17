@@ -1,6 +1,7 @@
 import NavbarComp from "../components/navbar";
 import FooterComp from "../components/footer";
 import SearchBarComp from "../components/searchbar";
+import SearchModalComp from "../components/searchmodalPlaces";
 import "./places.css";
 import React from "react";
 import {useState} from "react";
@@ -10,6 +11,7 @@ import BootstrapTable from 'react-bootstrap-table-next';
 function Places() {
     const [placesData, setPlacesData] = useState([])
     const [count, setCount] = useState(0);
+    const [show, setShow] = useState(false);
     
     const columns = [{
         dataField: 'Name',
@@ -46,7 +48,8 @@ function Places() {
     return (
         <div>
             <NavbarComp />
-            <SearchBarComp />
+            <SearchBarComp setShow={setShow}/>
+            <SearchModalComp show={show} setShow={setShow}/>
             <div className="sub-heading-container">
                 <h3 className="sub-heading mt-5">Total results: {count}</h3>
             </div>

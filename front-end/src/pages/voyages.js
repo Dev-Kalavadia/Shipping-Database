@@ -1,6 +1,7 @@
 import NavbarComp from "../components/navbar";
 import FooterComp from "../components/footer";
 import SearchBarComp from "../components/searchbar";
+import SearchModalComp from "../components/searchmodalVoyages";
 import "./voyages.css";
 import React from "react";
 import {useState} from "react";
@@ -10,6 +11,7 @@ function Voyages() {
 
     const [voyagesData, setVoyagesData] = useState([])
     const [count, setCount] = useState(0);
+    const [show, setShow] = useState(false);
     
     const columns = [{
         dataField: '_id',
@@ -43,7 +45,8 @@ function Voyages() {
     return (
         <div>
             <NavbarComp />
-            <SearchBarComp />
+            <SearchBarComp setShow={setShow}/>
+            <SearchModalComp show={show} setShow={setShow}/>
             <div className="sub-heading-container">
                 <h3 className="sub-heading mt-5">Total results: {count}</h3>
             </div>
