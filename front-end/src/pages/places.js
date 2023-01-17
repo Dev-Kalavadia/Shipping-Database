@@ -24,6 +24,7 @@ function Places() {
     const [showHelpModal, setShowHelpModal] = useState(false);
     const [sortType, setSortType] = useState("asc")
     const [sortBy, setSortBy] = useState("Name")
+    const [page, setPage] = useState(0);
 
     useEffect(() => {
         axios
@@ -31,11 +32,15 @@ function Places() {
             params: {
                 sortBy: sortBy,
                 sortType : sortType,
+                page : page,
             },
         })
         .then((response) => {
             setPlacesData(response.data.docs);
-            setCount(response.data.count)
+            setCount(response.data.count);
+            if (response.data.count / 100 > page) {
+                setPage(page + 1);
+            }
         });
 	}, [sortBy, sortType]);
     
@@ -197,11 +202,16 @@ function Places() {
 				params: {
 					sortBy: sortBy,
                     sortType : sortType,
+                    page : page,
 				},
 			})
 			.then((response) => {
-                setPlacesData(response.data.docs);
+                const joinedData = placesData.concat(response.data.docs);
+				setPlacesData(joinedData);
                 setCount(response.data.count)
+                if (response.data.count / 100 > page) {
+					setPage(page + 1);
+				}
 			});
     }
       

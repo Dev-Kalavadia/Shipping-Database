@@ -17,6 +17,7 @@ router.get("/", async (req, res) => {
         Ships.find({})
             .limit(100)
             .sort(sortParam)
+            .skip(q.page*100)
 			.exec((err, docs) => {
 				if (err) {
 					res.json({

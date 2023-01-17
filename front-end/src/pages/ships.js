@@ -24,6 +24,7 @@ function Ships() {
     const [showHelpModal, setShowHelpModal] = useState(false);
     const [sortType, setSortType] = useState("asc")
     const [sortBy, setSortBy] = useState("ID")
+    const [page, setPage] = useState(0);
 
     useEffect(() => {
         axios
@@ -31,11 +32,15 @@ function Ships() {
             params: {
                 sortBy: sortBy,
                 sortType : sortType,
+                page : page,
             },
         })
         .then((response) => {
             setShipsData(response.data.docs);
-            setCount(response.data.count)
+            setCount(response.data.count);
+            if (response.data.count / 100 > page) {
+                setPage(page + 1);
+            }
         });
 	}, [sortBy, sortType]);
     
@@ -167,11 +172,16 @@ function Ships() {
 				params: {
 					sortBy: sortBy,
                     sortType : sortType,
+                    page : page,
 				},
 			})
 			.then((response) => {
-				setShipsData(response.data.docs);
+                const joinedData = shipsData.concat(response.data.docs);
+				setShipsData(joinedData);
                 setCount(response.data.count)
+                if (response.data.count / 100 > page) {
+					setPage(page + 1);
+				}
 			});
     }
       

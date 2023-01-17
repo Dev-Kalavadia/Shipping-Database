@@ -24,6 +24,7 @@ function Voyages() {
     const [showHelpModal, setShowHelpModal] = useState(false);
     const [sortType, setSortType] = useState("asc")
     const [sortBy, setSortBy] = useState("_id")
+    const [page, setPage] = useState(0);
 
     useEffect(() => {
         axios
@@ -31,6 +32,7 @@ function Voyages() {
             params: {
                 sortBy: sortBy,
                 sortType : sortType,
+                page : page,
             },
         })
         .then((response) => {
@@ -52,7 +54,10 @@ function Voyages() {
                 }
             })
             setVoyagesData(response.data.docs);
-            setCount(response.data.count)
+            setCount(response.data.count);
+            if (response.data.count / 100 > page) {
+                setPage(page + 1);
+            }
         });
 	}, [sortBy, sortType]);
     
@@ -199,6 +204,7 @@ function Voyages() {
 				params: {
 					sortBy: sortBy,
                     sortType : sortType,
+                    page : page,
 				},
 			})
 			.then((response) => {
@@ -219,8 +225,12 @@ function Voyages() {
                         tempData.departureDate = ""
                     }
                 })
-				setVoyagesData(response.data.docs);
+                const joinedData = voyagesData.concat(response.data.docs);
+				setVoyagesData(joinedData);
                 setCount(response.data.count)
+                if (response.data.count / 100 > page) {
+					setPage(page + 1);
+				}
 			});
     }
 
