@@ -38,3 +38,8 @@
 .cstm-btn-load:hover{
     opacity:100%;
 }
+
+.cstm-holder{
+    display: block;
+    margin-top: 22%;
+}

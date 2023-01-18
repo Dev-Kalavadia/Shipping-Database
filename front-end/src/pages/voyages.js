@@ -4,6 +4,7 @@ import SearchBarComp from "../components/searchbar";
 import SearchModalComp from "../components/searchmodalVoyages";
 import HelpModalComp from "../components/helpmodal";
 import "./voyages.css";
+import "../components/loader.scss";
 import React, { useEffect } from "react";
 import {useState} from "react";
 import BootstrapTable from 'react-bootstrap-table-next';
@@ -25,8 +26,10 @@ function Voyages() {
     const [sortType, setSortType] = useState("asc")
     const [sortBy, setSortBy] = useState("_id")
     const [page, setPage] = useState(0);
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
+        setLoading(true)
         axios
         .get(`${process.env.REACT_APP_URI}/voyages`, {
             params: {
@@ -53,6 +56,7 @@ function Voyages() {
                     tempData.departureDate = ""
                 }
             })
+            setLoading(false)
             setVoyagesData(response.data.docs);
             setCount(response.data.count);
             if (response.data.count / 100 > page) {
@@ -237,13 +241,15 @@ function Voyages() {
     return (
         <div>
             <NavbarComp />
-            <SearchBarComp setShowSearchModal={setShowSearchModal} setShowHelpModal={setShowHelpModal}/>
-            <SearchModalComp showSearchModal={showSearchModal} setShowSearchModal={setShowSearchModal}/>
-            <HelpModalComp showHelpModal={showHelpModal} setShowHelpModal={setShowHelpModal}/>
-            <div className="sub-heading-container">
+            {!loading && <SearchBarComp setShowSearchModal={setShowSearchModal} setShowHelpModal={setShowHelpModal}/>}
+            {!loading && <SearchModalComp showSearchModal={showSearchModal} setShowSearchModal={setShowSearchModal}/>}
+            {!loading && <HelpModalComp showHelpModal={showHelpModal} setShowHelpModal={setShowHelpModal}/>}
+            {loading && <div className="d-flex justify-content-center cstm-holder"><ferry><chimney /><waves /></ferry></div>}
+            {voyagesData!=0 && <div className="sub-heading-container">
                 <h3 className="sub-heading mt-5">Total results: {count}</h3>
-            </div>
-            <div className="cstm-body">
+            </div>}
+
+            {voyagesData!=0 && <div className="cstm-body">
                 <BootstrapTable
                     keyField="id"
                     data={voyagesData}
@@ -252,19 +258,19 @@ function Voyages() {
                     hover
                     condensed
                 />
-            </div>
-            <div className="d-flex justify-content-center mt-2">
+            </div>}
+            {voyagesData!=0 && <div className="d-flex justify-content-center mt-2">
                 <a>Showing {voyagesData.length} of {count} results</a>
-            </div>
-            <div className="d-flex justify-content-center mt-3">
+            </div>}
+            {voyagesData!=0 && <div className="d-flex justify-content-center mt-3">
                 {count!=voyagesData.length && <Button
-					className="cstm-btn-load me-2"
+					className="cstm-btn-load"
 					onClick={loadMoreData}
 				>
 					Load More
 				</Button>}
-            </div>
-            <FooterComp />
+            </div>}
+            {!loading && <FooterComp />}
         </div>
     )
 }
