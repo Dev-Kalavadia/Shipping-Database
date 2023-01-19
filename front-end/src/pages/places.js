@@ -44,6 +44,7 @@ function Places() {
                     },
                 })
                 .then((response) => {
+                    console.log(response.data.docs)
                     setLoading(false)
                     setPlacesData(response.data.docs);
                     setCount(response.data.count);
@@ -70,12 +71,12 @@ function Places() {
 	}, [sortBy, sortType, searchLink]);
     
     const columns = [{
-        dataField: 'name',
+        dataField: 'Name',
         text: 'Place Name',
         headerFormatter: headerFormatter,
         headerEvents: {
             onClick: (e, column, columnIndex) => {
-                setSortBy('name');
+                setSortBy('Name');
                 setPage(0);
                 if (sortType ==='asc'){
                     setSortType('desc');
@@ -150,12 +151,12 @@ function Places() {
             }
         },
     }, {
-        dataField: 'min1',
+        dataField: 'Min1',
         text: 'Latitude Min',
         headerFormatter: headerFormatter,
         headerEvents: {
             onClick: (e, column, columnIndex) => {
-                setSortBy('min1');
+                setSortBy('Min1');
                 setPage(0);
                 if (sortType ==='asc'){
                     setSortType('desc');
@@ -198,12 +199,12 @@ function Places() {
             }
         },
     }, {
-        dataField: 'min2',
+        dataField: 'Min2',
         text: 'Longitude Min',
         headerFormatter: headerFormatter,
         headerEvents: {
             onClick: (e, column, columnIndex) => {
-                setSortBy('min2');
+                setSortBy('Min2');
                 setPage(0);
                 if (sortType ==='asc'){
                     setSortType('desc');

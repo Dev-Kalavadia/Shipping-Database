@@ -4,7 +4,7 @@ const placeSchema = new mongoose.Schema({
     no: {
         type: Number
     },
-    name:{
+    Name:{
         type: String
     },
     modernName: {
@@ -16,19 +16,19 @@ const placeSchema = new mongoose.Schema({
     lat:{
         type: String
     },
-    degr1: {
+    Degr1: {
         type: Number
     },
-    min1: {
+    Min1: {
         type: Number
     },
     long:{
         type: String
     },
-    degr2: {
+    Degr2: {
         type: Number
     },
-    min2: {
+    Min2: {
         type: Number
     },
     geoRef: {
