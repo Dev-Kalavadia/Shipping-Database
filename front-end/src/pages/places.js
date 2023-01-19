@@ -29,7 +29,9 @@ function Places() {
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
-        setLoading(true)
+        if(placesData.length==0){
+            setLoading(true)
+        }
         axios
         .get(`${process.env.REACT_APP_URI}/places`, {
             params: {
@@ -55,6 +57,7 @@ function Places() {
         headerEvents: {
             onClick: (e, column, columnIndex) => {
                 setSortBy('name');
+                setPage(0);
                 if (sortType ==='asc'){
                     setSortType('desc');
                 }
@@ -70,6 +73,7 @@ function Places() {
         headerEvents: {
             onClick: (e, column, columnIndex) => {
                 setSortBy('modernName');
+                setPage(0);
                 if (sortType ==='asc'){
                     setSortType('desc');
                 }
@@ -85,6 +89,7 @@ function Places() {
         headerEvents: {
             onClick: (e, column, columnIndex) => {
                 setSortBy('code');
+                setPage(0);
                 if (sortType ==='asc'){
                     setSortType('desc');
                 }
@@ -100,6 +105,7 @@ function Places() {
         headerEvents: {
             onClick: (e, column, columnIndex) => {
                 setSortBy('lat');
+                setPage(0);
                 if (sortType ==='asc'){
                     setSortType('desc');
                 }
@@ -115,6 +121,7 @@ function Places() {
         headerEvents: {
             onClick: (e, column, columnIndex) => {
                 setSortBy('degr1');
+                setPage(0);
                 if (sortType ==='asc'){
                     setSortType('desc');
                 }
@@ -130,6 +137,7 @@ function Places() {
         headerEvents: {
             onClick: (e, column, columnIndex) => {
                 setSortBy('min1');
+                setPage(0);
                 if (sortType ==='asc'){
                     setSortType('desc');
                 }
@@ -145,6 +153,7 @@ function Places() {
         headerEvents: {
             onClick: (e, column, columnIndex) => {
                 setSortBy('long');
+                setPage(0);
                 if (sortType ==='asc'){
                     setSortType('desc');
                 }
@@ -160,6 +169,7 @@ function Places() {
         headerEvents: {
             onClick: (e, column, columnIndex) => {
                 setSortBy('degr2');
+                setPage(0);
                 if (sortType ==='asc'){
                     setSortType('desc');
                 }
@@ -175,6 +185,7 @@ function Places() {
         headerEvents: {
             onClick: (e, column, columnIndex) => {
                 setSortBy('min2');
+                setPage(0);
                 if (sortType ==='asc'){
                     setSortType('desc');
                 }
@@ -190,6 +201,7 @@ function Places() {
         headerEvents: {
             onClick: (e, column, columnIndex) => {
                 setSortBy('geoRef');
+                setPage(0);
                 if (sortType ==='asc'){
                     setSortType('desc');
                 }

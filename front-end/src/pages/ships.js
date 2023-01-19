@@ -29,7 +29,9 @@ function Ships() {
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
-        setLoading(true)
+        if(shipsData.length==0){
+            setLoading(true)
+        }
         axios
         .get(`${process.env.REACT_APP_URI}/ships`, {
             params: {
@@ -64,6 +66,7 @@ function Ships() {
         headerEvents: {
             onClick: (e, column, columnIndex) => {
                 setSortBy('ID');
+                setPage(0);
                 if (sortType ==='asc'){
                     setSortType('desc');
                 }
@@ -79,6 +82,7 @@ function Ships() {
         headerEvents: {
             onClick: (e, column, columnIndex) => {
                 setSortBy('shipName');
+                setPage(0);
                 if (sortType ==='asc'){
                     setSortType('desc');
                 }
@@ -94,6 +98,7 @@ function Ships() {
         headerEvents: {
             onClick: (e, column, columnIndex) => {
                 setSortBy('otherNames');
+                setPage(0);
                 if (sortType ==='asc'){
                     setSortType('desc');
                 }
@@ -109,6 +114,7 @@ function Ships() {
         headerEvents: {
             onClick: (e, column, columnIndex) => {
                 setSortBy('type');
+                setPage(0);
                 if (sortType ==='asc'){
                     setSortType('desc');
                 }
@@ -124,6 +130,7 @@ function Ships() {
         headerEvents: {
             onClick: (e, column, columnIndex) => {
                 setSortBy('yearIn');
+                setPage(0);
                 if (sortType ==='asc'){
                     setSortType('desc');
                 }
@@ -139,6 +146,7 @@ function Ships() {
         headerEvents: {
             onClick: (e, column, columnIndex) => {
                 setSortBy('yearOut');
+                setPage(0);
                 if (sortType ==='asc'){
                     setSortType('desc');
                 }
@@ -154,6 +162,7 @@ function Ships() {
         headerEvents: {
             onClick: (e, column, columnIndex) => {
                 setSortBy('last');
+                setPage(0);
                 if (sortType ==='asc'){
                     setSortType('desc');
                 }
@@ -169,6 +178,7 @@ function Ships() {
         headerEvents: {
             onClick: (e, column, columnIndex) => {
                 setSortBy('measurements');
+                setPage(0);
                 if (sortType ==='asc'){
                     setSortType('desc');
                 }

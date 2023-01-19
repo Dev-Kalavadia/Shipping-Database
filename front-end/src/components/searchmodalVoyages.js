@@ -3,7 +3,7 @@ import {Button, Row, Col,Container, Modal} from 'react-bootstrap';
 import Form from 'react-bootstrap/Form';
 import './searchmodal.css'
 
-function SearchModalComp({showSearchModal, setShowSearchModal}) {
+function SearchModalComp({showSearchModal, setShowSearchModal, setSearchLink, setPage, setSortBy, setIsSearch}) {
 
     const handleCloseSearchModal = () => setShowSearchModal(false);
 
@@ -82,6 +82,125 @@ function SearchModalComp({showSearchModal, setShowSearchModal}) {
         },
     ]
 
+    const generateLink = ()=>{
+        let link="";
+        if (depaPlace!=""){
+            if (link!=""){
+                link+="&"
+            }
+            link+="departurePlace="+depaPlace
+        }
+        if (depaCodef!=""){
+            if (link!=""){
+                link+="&"
+            }
+            link+="depFrom="+depaCodef
+        }
+        if (depaCodet!=""){
+            if (link!=""){
+                link+="&"
+            }
+            link+="depTo="+depaCodet
+        }
+        if (arriPlace!=""){
+            if (link!=""){
+                link+="&"
+            }
+            link+="arrivalPlace="+arriPlace
+        }
+        if (arriCodef!=""){
+            if (link!=""){
+                link+="&"
+            }
+            link+="arrFrom="+arriCodef
+        }
+        if (arriCodet!=""){
+            if (link!=""){
+                link+="&"
+            }
+            link+="arrTo="+arriCodet
+        }
+        if (voyaCode!=""){
+            if (link!=""){
+                link+="&"
+            }
+            link+="_id="+voyaCode
+        }
+        if (shiName!=""){
+            if (link!=""){
+                link+="&"
+            }
+            link+="shipName="+shiName
+        }
+        if (shiCode!=""){
+            if (link!=""){
+                link+="&"
+            }
+            link+="ID="+shiCode
+        }
+        if (arriyearf!=""){
+            if (link!=""){
+                link+="&"
+            }
+            link+="arrivalyFrom="+arriyearf
+        }
+        if (arriyeart!=""){
+            if (link!=""){
+                link+="&"
+            }
+            link+="arrivalyTo="+arriyeart
+        }
+        if (arrimonthf!=""){
+            if (link!=""){
+                link+="&"
+            }
+            link+="arrivalmFrom="+arrimonthf
+        }
+        if (arrimontht!=""){
+            if (link!=""){
+                link+="&"
+            }
+            link+="arrivalmTo="+arrimontht
+        }
+        if (depayearf!=""){
+            if (link!=""){
+                link+="&"
+            }
+            link+="depayFrom="+depayearf
+        }
+        if (depayeart!=""){
+            if (link!=""){
+                link+="&"
+            }
+            link+="depayTo="+depayeart
+        }
+        if (depamonthf!=""){
+            if (link!=""){
+                link+="&"
+            }
+            link+="depamFrom="+depamonthf
+        }
+        if (depamontht!=""){
+            if (link!=""){
+                link+="&"
+            }
+            link+="depamTo="+depamontht
+        }
+        if (link!=""){
+            if (arriCodef!="" || arriCodet!=""){
+                setSortBy('arrCode');
+            }
+            if (arriyearf!="" || arriyeart!="" || arrimonthf!="" || arrimontht!=""){
+                setSortBy('arrivalDate');
+            }
+            if (depayearf!="" || depayeart!="" || depamonthf!="" || depamontht!=""){
+                setSortBy('departureDate');
+            }
+            setPage(0);
+            setSearchLink(link);
+        }
+    }
+
     const clearsearch = ()=>{
         setDepaPlace("")
         setDepaCodef("")
@@ -100,6 +219,7 @@ function SearchModalComp({showSearchModal, setShowSearchModal}) {
         setDepayeart("")
         setDepamonthf("")
         setDepamontht("")
+        setIsSearch(false)
     }
 
     return (
@@ -177,7 +297,12 @@ function SearchModalComp({showSearchModal, setShowSearchModal}) {
                 </Modal.Body>
                 <Modal.Footer>
                 <Button variant="secondary" onClick={clearsearch}>Clear</Button>
-                <Button className="cstm-btn-search-modal" onClick={handleCloseSearchModal}>Search</Button>
+                <Button className="cstm-btn-search-modal" onClick={()=>{
+                    handleCloseSearchModal();
+                    generateLink();
+                    setIsSearch(true);
+                    }}>Search
+                </Button>
                 </Modal.Footer>
             </Modal>
         </div>

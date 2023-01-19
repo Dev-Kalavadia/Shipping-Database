@@ -18,6 +18,7 @@ function SearchBarComp({setShowSearchModal, setShowHelpModal}) {
 					aria-label="Search"
 					size="lw"
 					onClick={handleShowSearchModal}
+					readOnly
 				/>
 				<Button
 					className="cstm-btn-help me-2"
