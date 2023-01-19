@@ -3,7 +3,7 @@ import {Button, Row, Col,Container, Modal} from 'react-bootstrap';
 import Form from 'react-bootstrap/Form';
 import './searchmodal.css'
 
-function SearchModalComp({showSearchModal, setShowSearchModal}) {
+function SearchModalComp({showSearchModal, setShowSearchModal, setSearchLink, setPage, setSortBy, setIsSearch}) {
 
     const handleCloseSearchModal = () => setShowSearchModal(false);
 
@@ -47,6 +47,70 @@ function SearchModalComp({showSearchModal, setShowSearchModal}) {
         }
     ]
 
+    const generateLink = ()=>{
+        let link="";
+        if (number!=""){
+            if (link!=""){
+                link+="&"
+            }
+            link+="ID="+number
+        }
+        if (Name!=""){
+            if (link!=""){
+                link+="&"
+            }
+            link+="name="+Name
+        }
+        if (otherName!=""){
+            if (link!=""){
+                link+="&"
+            }
+            link+="othername="+otherName
+        }
+        if (yearInf!=""){
+            if (link!=""){
+                link+="&"
+            }
+            link+="yearInf="+yearInf
+        }
+        if (yearInt!=""){
+            if (link!=""){
+                link+="&"
+            }
+            link+="yearInt="+yearInt
+        }
+        if (yearOutf!=""){
+            if (link!=""){
+                link+="&"
+            }
+            link+="yearOutf="+yearOutf
+        }
+        if (yearOutt!=""){
+            if (link!=""){
+                link+="&"
+            }
+            link+="yearOutt="+yearOutt
+        }
+        if (lastf!=""){
+            if (link!=""){
+                link+="&"
+            }
+            link+="lastf="+lastf
+        }
+        if (lastt!=""){
+            if (link!=""){
+                link+="&"
+            }
+            link+="lastt="+lastt
+        }
+
+        if (link!=""){
+            setIsSearch(true);
+            setPage(0)
+            setSearchLink(link);
+        }
+    } 
+
     const clearsearch = ()=>{
         setnumber("")
         setName("")
@@ -57,6 +121,9 @@ function SearchModalComp({showSearchModal, setShowSearchModal}) {
         setyearOutt("")
         setlastf("")
         setlastt("")
+        setIsSearch(false)
+        setSearchLink("")
+        setPage(0)
     }
 
     return (
@@ -108,7 +175,11 @@ function SearchModalComp({showSearchModal, setShowSearchModal}) {
                 </Modal.Body>
                 <Modal.Footer>
                 <Button variant="secondary" onClick={clearsearch}>Clear</Button>
-                <Button className="cstm-btn-search-modal" onClick={handleCloseSearchModal}>Search</Button>
+                <Button className="cstm-btn-search-modal" onClick={()=>{
+                    handleCloseSearchModal();
+                    generateLink();
+                    }}>Search
+                </Button>
                 </Modal.Footer>
             </Modal>
         </div>

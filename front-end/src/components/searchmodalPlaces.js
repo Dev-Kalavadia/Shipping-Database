@@ -3,7 +3,7 @@ import {Button, Row, Col,Container, Modal} from 'react-bootstrap';
 import Form from 'react-bootstrap/Form';
 import './searchmodal.css'
 
-function SearchModalComp({showSearchModal, setShowSearchModal}) {
+function SearchModalComp({showSearchModal, setShowSearchModal, setSearchLink, setPage, setSortBy, setIsSearch}) {
 
     const handleCloseSearchModal = () => setShowSearchModal(false);
 
@@ -27,11 +27,51 @@ function SearchModalComp({showSearchModal, setShowSearchModal}) {
         },
     ]
 
+    const generateLink = ()=>{
+        let link="";
+        if (Name!=""){
+            if (link!=""){
+                link+="&"
+            }
+            link+="Name="+Name
+        }
+        if (modernName!=""){
+            if (link!=""){
+                link+="&"
+            }
+            link+="modernName="+modernName
+        }
+        if (codef!=""){
+            if (link!=""){
+                link+="&"
+            }
+            link+="codef="+codef
+        }
+        if (codet!=""){
+            if (link!=""){
+                link+="&"
+            }
+            link+="codet="+codet
+        }
+
+        if (link!=""){
+            setIsSearch(true);
+            if (codef!="" || codet!=""){
+                setSortBy('code');
+            }
+            setPage(0);
+            setSearchLink(link);
+        }
+    }    
+
     const clearsearch = ()=>{
         setName("")
         setModernName("")
         setcodef("")
         setcodet("")
+        setIsSearch(false)
+        setSearchLink("")
+        setPage(0)
     }
 
     return (
@@ -68,7 +108,11 @@ function SearchModalComp({showSearchModal, setShowSearchModal}) {
                 </Modal.Body>
                 <Modal.Footer>
                 <Button variant="secondary" onClick={clearsearch}>Clear</Button>
-                <Button className="cstm-btn-search-modal" onClick={handleCloseSearchModal}>Search</Button>
+                <Button className="cstm-btn-search-modal" onClick={()=>{
+                    handleCloseSearchModal();
+                    generateLink();
+                    }}>Search
+                </Button>
                 </Modal.Footer>
             </Modal>
         </div>

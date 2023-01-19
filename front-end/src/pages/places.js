@@ -27,28 +27,47 @@ function Places() {
     const [sortBy, setSortBy] = useState("Name")
     const [page, setPage] = useState(0);
     const [loading, setLoading] = useState(false);
+    const [searchLink, setSearchLink] = useState("");
+    const [isSearch, setIsSearch] = useState(false);
 
     useEffect(() => {
         if(placesData.length==0){
             setLoading(true)
         }
-        axios
-        .get(`${process.env.REACT_APP_URI}/places`, {
-            params: {
-                sortBy: sortBy,
-                sortType : sortType,
-                page : page,
-            },
-        })
-        .then((response) => {
-            setLoading(false)
-            setPlacesData(response.data.docs);
-            setCount(response.data.count);
-            if (response.data.count / 100 > page) {
-                setPage(page + 1);
-            }
-        });
-	}, [sortBy, sortType]);
+        if(!isSearch){
+            axios
+                .get(`${process.env.REACT_APP_URI}/places`, {
+                    params: {
+                        sortBy: sortBy,
+                        sortType : sortType,
+                        page : page,
+                    },
+                })
+                .then((response) => {
+                    setLoading(false)
+                    setPlacesData(response.data.docs);
+                    setCount(response.data.count);
+                    if (response.data.count / 100 > page) {
+                        setPage(page + 1);
+                    }
+                });
+        }
+        else if (isSearch){
+            axios
+                .post(`${process.env.REACT_APP_URI}/places/search?${searchLink}&page=${page}&sortBy=${sortBy}&sortType=${sortType}`, {
+                    params: {
+                    },
+                })
+                .then((response) => {
+                    setLoading(false)
+                    setPlacesData(response.data.docs);
+                    setCount(response.data.count);
+                    if (response.data.count / 100 > page) {
+                        setPage(page + 1);
+                    }
+                });
+        }
+	}, [sortBy, sortType, searchLink]);
     
     const columns = [{
         dataField: 'name',
@@ -213,30 +232,46 @@ function Places() {
     }];
 
     const loadMoreData = function () {
-        axios
-			.get(`${process.env.REACT_APP_URI}/places`, {
-				params: {
-					sortBy: sortBy,
-                    sortType : sortType,
-                    page : page,
-				},
-			})
-			.then((response) => {
-                const joinedData = placesData.concat(response.data.docs);
-				setPlacesData(joinedData);
-                setCount(response.data.count)
-                if (response.data.count / 100 > page) {
-					setPage(page + 1);
-				}
-			});
+        if(!isSearch){
+            axios
+                .get(`${process.env.REACT_APP_URI}/places`, {
+                    params: {
+                        sortBy: sortBy,
+                        sortType : sortType,
+                        page : page,
+                    },
+                })
+                .then((response) => {
+                    const joinedData = placesData.concat(response.data.docs);
+                    setPlacesData(joinedData);
+                    setCount(response.data.count)
+                    if (response.data.count / 100 > page) {
+                        setPage(page + 1);
+                    }
+                });
+        }
+        else if (isSearch){
+            axios
+                .post(`${process.env.REACT_APP_URI}/places/search?${searchLink}&page=${page}&sortBy=${sortBy}&sortType=${sortType}`, {
+                    params: {
+                    },
+                })
+                .then((response) => {
+                    const joinedData = placesData.concat(response.data.docs);
+                    setPlacesData(joinedData);
+                    setCount(response.data.count)
+                    if (response.data.count / 100 > page) {
+                        setPage(page + 1);
+                    }
+                });
+        }
     }
       
     return (
         <div>
             <NavbarComp />
             {!loading && <SearchBarComp setShowSearchModal={setShowSearchModal} setShowHelpModal={setShowHelpModal}/>}
-            {!loading && <SearchModalComp showSearchModal={showSearchModal} setShowSearchModal={setShowSearchModal}/>}
-            {!loading && <HelpModalComp showHelpModal={showHelpModal} setShowHelpModal={setShowHelpModal}/>}
+            {!loading && <SearchModalComp showSearchModal={showSearchModal} setShowSearchModal={setShowSearchModal} setSearchLink={setSearchLink} setPage={setPage} setSortBy={setSortBy} setIsSearch={setIsSearch}/>}            {!loading && <HelpModalComp showHelpModal={showHelpModal} setShowHelpModal={setShowHelpModal}/>}
             {loading && <div className="d-flex justify-content-center cstm-holder"><ferry><chimney /><waves /></ferry></div>}
             {placesData!=0 && <div className="sub-heading-container">
                 <h3 className="sub-heading mt-5">Total results: {count}</h3>

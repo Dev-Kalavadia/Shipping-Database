@@ -27,37 +27,65 @@ function Ships() {
     const [sortBy, setSortBy] = useState("ID")
     const [page, setPage] = useState(0);
     const [loading, setLoading] = useState(false);
+    const [searchLink, setSearchLink] = useState("");
+    const [isSearch, setIsSearch] = useState(false);
 
     useEffect(() => {
         if(shipsData.length==0){
             setLoading(true)
         }
-        axios
-        .get(`${process.env.REACT_APP_URI}/ships`, {
-            params: {
-                sortBy: sortBy,
-                sortType : sortType,
-                page : page,
-            },
-        })
-        .then((response) => {
-            response.data.docs.forEach((dataPoint, idx) => {
-                let tempData = dataPoint;
-                // if the arrival date exists create display string
-                if (dataPoint.otherNames) {
-                    tempData.otherNames = dataPoint.otherNames.join(", ");
-                } else {
-                    tempData.otherNames = ""
-                }
+        if(!isSearch){
+            axios
+            .get(`${process.env.REACT_APP_URI}/ships`, {
+                params: {
+                    sortBy: sortBy,
+                    sortType : sortType,
+                    page : page,
+                },
             })
-            setLoading(false)
-            setShipsData(response.data.docs);
-            setCount(response.data.count);
-            if (response.data.count / 100 > page) {
-                setPage(page + 1);
-            }
-        });
-	}, [sortBy, sortType]);
+            .then((response) => {
+                response.data.docs.forEach((dataPoint, idx) => {
+                    let tempData = dataPoint;
+                    // if the arrival date exists create display string
+                    if (dataPoint.otherNames) {
+                        tempData.otherNames = dataPoint.otherNames.join(", ");
+                    } else {
+                        tempData.otherNames = ""
+                    }
+                })
+                setLoading(false)
+                setShipsData(response.data.docs);
+                setCount(response.data.count);
+                if (response.data.count / 100 > page) {
+                    setPage(page + 1);
+                }
+            });
+        }
+        else if (isSearch){
+            axios
+            .post(`${process.env.REACT_APP_URI}/ships/search?${searchLink}&page=${page}&sortBy=${sortBy}&sortType=${sortType}`, {
+                params: {
+                },
+            })
+            .then((response) => {
+                response.data.docs.forEach((dataPoint, idx) => {
+                    let tempData = dataPoint;
+                    // if the arrival date exists create display string
+                    if (dataPoint.otherNames) {
+                        tempData.otherNames = dataPoint.otherNames.join(", ");
+                    } else {
+                        tempData.otherNames = ""
+                    }
+                })
+                setLoading(false)
+                setShipsData(response.data.docs);
+                setCount(response.data.count);
+                if (response.data.count / 100 > page) {
+                    setPage(page + 1);
+                }
+            });
+        }
+	}, [sortBy, sortType, searchLink]);
     
     const columns = [{
         dataField: 'ID',
@@ -190,39 +218,64 @@ function Ships() {
     }];
 
     const loadMoreData = function () {
-        axios
-			.get(`${process.env.REACT_APP_URI}/ships`, {
-				params: {
-					sortBy: sortBy,
-                    sortType : sortType,
-                    page : page,
-				},
-			})
-			.then((response) => {
-                response.data.docs.forEach((dataPoint, idx) => {
-                    let tempData = dataPoint;
-                    // if the arrival date exists create display string
-                    if (dataPoint.otherNames) {
-                        tempData.otherNames = dataPoint.otherNames.join(", ");
-                    } else {
-                        tempData.otherNames = ""
-                    }
+        if(!isSearch){
+            axios
+                .get(`${process.env.REACT_APP_URI}/ships`, {
+                    params: {
+                        sortBy: sortBy,
+                        sortType : sortType,
+                        page : page,
+                    },
                 })
-                const joinedData = shipsData.concat(response.data.docs);
-				setShipsData(joinedData);
-                setCount(response.data.count)
-                if (response.data.count / 100 > page) {
-					setPage(page + 1);
-				}
-			});
+                .then((response) => {
+                    response.data.docs.forEach((dataPoint, idx) => {
+                        let tempData = dataPoint;
+                        // if the arrival date exists create display string
+                        if (dataPoint.otherNames) {
+                            tempData.otherNames = dataPoint.otherNames.join(", ");
+                        } else {
+                            tempData.otherNames = ""
+                        }
+                    })
+                    const joinedData = shipsData.concat(response.data.docs);
+                    setShipsData(joinedData);
+                    setCount(response.data.count)
+                    if (response.data.count / 100 > page) {
+                        setPage(page + 1);
+                    }
+                });
+        }
+        else if (isSearch){
+            axios
+                .post(`${process.env.REACT_APP_URI}/ships/search?${searchLink}&page=${page}&sortBy=${sortBy}&sortType=${sortType}`, {
+                    params: {
+                    },
+                })
+                .then((response) => {
+                    response.data.docs.forEach((dataPoint, idx) => {
+                        let tempData = dataPoint;
+                        // if the arrival date exists create display string
+                        if (dataPoint.otherNames) {
+                            tempData.otherNames = dataPoint.otherNames.join(", ");
+                        } else {
+                            tempData.otherNames = ""
+                        }
+                    })
+                    const joinedData = shipsData.concat(response.data.docs);
+                    setShipsData(joinedData);
+                    setCount(response.data.count)
+                    if (response.data.count / 100 > page) {
+                        setPage(page + 1);
+                    }
+                });
+        }
     }
       
     return (
         <div>
             <NavbarComp />
             {!loading && <SearchBarComp setShowSearchModal={setShowSearchModal} setShowHelpModal={setShowHelpModal}/>}
-            {!loading && <SearchModalComp showSearchModal={showSearchModal} setShowSearchModal={setShowSearchModal}/>}
-            {!loading && <HelpModalComp showHelpModal={showHelpModal} setShowHelpModal={setShowHelpModal}/>}
+            {!loading && <SearchModalComp showSearchModal={showSearchModal} setShowSearchModal={setShowSearchModal} setSearchLink={setSearchLink} setPage={setPage} setSortBy={setSortBy} setIsSearch={setIsSearch}/>}            {!loading && <HelpModalComp showHelpModal={showHelpModal} setShowHelpModal={setShowHelpModal}/>}
             {loading && <div className="d-flex justify-content-center cstm-holder"><ferry><chimney /><waves /></ferry></div>}
             {shipsData!=0 && <div className="sub-heading-container">
                 <h3 className="sub-heading mt-5">Total results: {count}</h3>

@@ -187,6 +187,7 @@ function SearchModalComp({showSearchModal, setShowSearchModal, setSearchLink, se
             link+="depamTo="+depamontht
         }
         if (link!=""){
+            setIsSearch(true);
             if (arriCodef!="" || arriCodet!=""){
                 setSortBy('arrCode');
             }
@@ -220,6 +221,8 @@ function SearchModalComp({showSearchModal, setShowSearchModal, setSearchLink, se
         setDepamonthf("")
         setDepamontht("")
         setIsSearch(false)
+        setSearchLink("")
+        setPage(0)
     }
 
     return (
@@ -300,7 +303,6 @@ function SearchModalComp({showSearchModal, setShowSearchModal, setSearchLink, se
                 <Button className="cstm-btn-search-modal" onClick={()=>{
                     handleCloseSearchModal();
                     generateLink();
-                    setIsSearch(true);
                     }}>Search
                 </Button>
                 </Modal.Footer>
