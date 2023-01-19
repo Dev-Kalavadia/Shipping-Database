@@ -70,18 +70,12 @@ function Voyages() {
         }
         else if (isSearch){
             axios
-            .post(`${process.env.REACT_APP_URI}/voyages/search`, {
+            .post(`${process.env.REACT_APP_URI}/voyages/search?${searchLink}&page=${page}&sortBy=${sortBy}&sortType=${sortType}`, {
                 params: {
-                    sortBy: sortBy,
-                    sortType : sortType,
-                    page : page,
-                    searchLink : searchLink,
                 },
             })
             .then((response) => {
                 // Tokenize date
-                console.log("search mode effect")
-                console.log(searchLink)
                 response.data.docs.forEach((dataPoint, idx) => {
                     let tempData = dataPoint;
                     if (dataPoint.arrivalDate) {
@@ -290,12 +284,8 @@ function Voyages() {
         }
         else if (isSearch){
             axios
-                .post(`${process.env.REACT_APP_URI}/voyages/search`, {
+                .post(`${process.env.REACT_APP_URI}/voyages/search?${searchLink}&page=${page}&sortBy=${sortBy}&sortType=${sortType}`, {
                     params: {
-                        sortBy: sortBy,
-                        sortType : sortType,
-                        page : page,
-                        searchLink : searchLink,
                     },
                 })
                 .then((response) => {

@@ -14,8 +14,6 @@ router.post("/search/", async (req, res) => {
         }
     }
 
-    console.log(q);
-
     // formatting for dates
     if (q.arrivalmFrom<10){q.arrivalmFrom='0'+q.arrivalmFrom}
     if (q.arrivalmTo<10){q.arrivalmTo='0'+q.arrivalmTo}
@@ -84,7 +82,7 @@ router.post("/search/", async (req, res) => {
     if (q.arrFrom && q.arrTo){searchfilter["arrCode"]={$gte : q.arrFrom, $lte : q.arrTo}}
     if (q.arrFrom && !q.arrTo){searchfilter["arrCode"]={$gte : q.arrFrom}}
     if (!q.arrFrom && q.arrTo){searchfilter["arrCode"]={$lte : q.arrTo}}
-    console.log(searchfilter);
+
     try {
         Voyages
             .find(searchfilter)
@@ -97,7 +95,8 @@ router.post("/search/", async (req, res) => {
 						success: false,
 					});
 				} else {
-					Voyages.find({})
+					Voyages
+                        .find(searchfilter)
 						.countDocuments((err, count) => {
 							res.json({
 								docs,
