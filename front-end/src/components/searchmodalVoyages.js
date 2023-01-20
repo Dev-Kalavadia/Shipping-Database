@@ -1,7 +1,9 @@
+import axios from 'axios';
 import React, { useState } from 'react';
 import {Button, Row, Col,Container, Modal} from 'react-bootstrap';
 import Form from 'react-bootstrap/Form';
 import './searchmodal.css'
+import Autocomplete from 'react-autocomplete';
 
 function SearchModalComp({showSearchModal, setShowSearchModal, setSearchLink, setPage, setSortBy, setIsSearch}) {
 
@@ -24,6 +26,7 @@ function SearchModalComp({showSearchModal, setShowSearchModal, setSearchLink, se
     const [depayeart, setDepayeart] = useState("")
     const [depamonthf, setDepamonthf] = useState("")
     const [depamontht, setDepamontht] = useState("")
+    const [suggestions, setSuggestions] = useState([])
 
     const filters=[
         {
@@ -225,6 +228,17 @@ function SearchModalComp({showSearchModal, setShowSearchModal, setSearchLink, se
         setPage(0)
     }
 
+    const suggest = async(templink) => {
+        axios
+            .post(`${process.env.REACT_APP_URI}/voyages/suggest?${templink+""}`, {
+                params: {
+                },
+            })
+            .then((response)=>{
+                setSuggestions(response.data);
+            })
+    }
+
     return (
         <div>
             <Modal
@@ -240,19 +254,59 @@ function SearchModalComp({showSearchModal, setShowSearchModal, setSearchLink, se
                 <Modal.Body>
                     <Container className="d-flex">
                         <Col className="pt-2">
-                            <Form className="d-flex" style={{ minWidth: "60%" }}>
-                                <Form.Control value={depaPlace} placeholder={filters[0].placeholder} onChange={e => setDepaPlace(e.target.value)}  className="me-2 mt-2 cstm-modal-input" size="lw" />
+                            <Form className="d-flex" style={{ minWidth: "60%"}}>
+                                <Autocomplete
+                                    items={suggestions}
+                                    getItemValue={item => item.departurePlace}
+                                    renderItem={(item, highlighted) =>
+                                        <Form.Control className="pt-1 pb-1 me-2 cstm-modal-sugg" style={{backgroundColor: highlighted ? '#eee' : 'transparent', zIndex: '2'}}
+                                            value={item.departurePlace}>
+                                        </Form.Control>}
+                                    value={depaPlace}
+                                    onChange={e => {setDepaPlace(e.target.value); suggest("departurePlace="+e.target.value);}}
+                                    onSelect={value => {setDepaPlace(value)}}
+                                    renderInput={props => {
+                                        return <Form.Control {...props} placeholder={filters[0].placeholder}  className="me-2 mt-2 cstm-modal-input"/>;
+                                    }}
+                                />
                             </Form>
                             <Form className="d-flex" style={{ minWidth: "60%" }}>
-                                <Form.Control value={arriPlace} placeholder={filters[3].placeholder} onChange={e => setArriPlace(e.target.value)}  className="me-2 mt-2 cstm-modal-input" size="lw" />
+                                <Autocomplete
+                                    items={suggestions}
+                                    getItemValue={item => item.arrivalPlace}
+                                    renderItem={(item, highlighted) =>
+                                        <Form.Control className="pt-1 pb-1 me-2 cstm-modal-sugg" style={{backgroundColor: highlighted ? '#eee' : 'transparent', zIndex: '2'}}
+                                            value={item.arrivalPlace} onChange={e=>{}}>
+                                        </Form.Control>
+                                    }
+                                    value={arriPlace}
+                                    onChange={e => {setArriPlace(e.target.value); suggest("arrivalPlace="+e.target.value);}}
+                                    onSelect={value => {setArriPlace(value)}}
+                                    renderInput={props => {
+                                        return <Form.Control {...props} placeholder={filters[3].placeholder}  className="me-2 mt-2 cstm-modal-input"/>;
+                                    }}
+                                />
                             </Form>
-                            <Form className="d-flex" style={{ minWidth: "60%" }}>    
+                            <Form className="d-flex" style={{ minWidth: "60%" }}>   
                                 <Form.Control value={voyaCode} placeholder={filters[6].placeholder} onChange={e => setVoyaCode(e.target.value)}  className="me-2 mt-2 cstm-modal-input" size="lw" />
                             </Form>
                             <Form className="d-flex" style={{ minWidth: "60%" }}>   
-                                <Form.Control value={shiName} placeholder={filters[7].placeholder} onChange={e => setShiName(e.target.value)}  className="me-2 mt-2 cstm-modal-input" size="lw" />
+                                <Autocomplete
+                                    items={suggestions}
+                                    getItemValue={item => item.shipName}
+                                    renderItem={(item, highlighted) =>
+                                        <Form.Control className="pt-1 pb-1 me-2 cstm-modal-sugg" style={{backgroundColor: highlighted ? '#eee' : 'transparent', zIndex: '2'}}
+                                            value={item.shipName}>
+                                        </Form.Control>}
+                                    value={shiName}
+                                    onChange={e => {setShiName(e.target.value); suggest("shipName="+e.target.value);}}
+                                    onSelect={value => {setShiName(value)}}
+                                    renderInput={props => {
+                                        return <Form.Control {...props} placeholder={filters[7].placeholder}  className="me-2 mt-2 cstm-modal-input"/>;
+                                    }}
+                                />
                             </Form>
-                            <Form className="d-flex" style={{ minWidth: "60%" }}>   
+                            <Form className="d-flex" style={{ minWidth: "60%" }}>  
                                 <Form.Control value={shiCode} placeholder={filters[9].placeholder} onChange={e => setShiCode(e.target.value)}  className="me-2 mt-2 cstm-modal-input" size="lw" />
                             </Form>
                         </Col>

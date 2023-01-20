@@ -1,6 +1,15 @@
+/* * { outline: 1px solid red; } */
+
 .cstm-btn-search-modal{
     background-color: #cc2755 !important;
     outline:none !important;
+    border: none !important;
+}
+
+.cstm-modal-sugg {
+    outline: none;
+    padding-left: 12px !important;
+    box-shadow: none;
     border: none !important;
 }
 

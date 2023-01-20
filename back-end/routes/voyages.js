@@ -3,6 +3,325 @@ const router = express.Router();
 const mongoose = require("mongoose");
 const Voyages = require("../schema/voyages");
 
+router.post("/suggest/", async (req, res)=>{
+    const q = req.query;
+    if (q._id){
+        Voyages
+        .aggregate([
+            {
+              $search: {
+                "autocomplete": {
+                  "path": "_id",
+                  "query": q._id
+                }
+              }
+            },
+            {
+              $limit: 5
+            },
+            {
+              $project: {
+                "_id": 1,
+              }
+            }
+        ])
+        .exec((err, docs) => {
+            if (err) {
+                res.json({
+                    success: false,
+                });
+            }
+            else {
+                res.json(docs)
+            }
+        })
+    }
+    if (q.departurePlace){
+      Voyages
+      .aggregate([
+          {
+            $search: {
+              "autocomplete": {
+                "path": "departurePlace",
+                "query": q.departurePlace
+              }
+            }
+          },
+          { $group: {_id: null, departurePlace: {$addToSet: "$departurePlace"}}},
+          { $unwind: "$departurePlace" },
+          { $project: { _id: 0 }},
+          {
+            $limit: 5
+          },
+          {
+            $project: {
+              "_id": 0,
+              "departurePlace": 1,
+            }
+          }
+      ])
+      .exec((err, docs) => {
+        if (err) {
+            res.json({
+                success: false,
+            });
+        }
+        else {
+            res.json(docs)
+        }
+      })
+  }
+    if (q.arrivalPlace){
+        Voyages
+        .aggregate([
+            {
+              $search: {
+                "autocomplete": {
+                  "path": "arrivalPlace",
+                  "query": q.arrivalPlace
+                }
+              }
+            },
+            { $group: {_id: null, arrivalPlace: {$addToSet: "$arrivalPlace"}}},
+            { $unwind: "$arrivalPlace" },
+            { $project: { _id: 0 }},
+            {
+              $limit: 5
+            },
+            {
+              $project: {
+                "_id": 0,
+                "arrivalPlace": 1,
+              }
+            }
+        ])
+        .exec((err, docs) => {
+            if (err) {
+                res.json({
+                    success: false,
+                });
+            }
+            else {
+                res.json(docs)
+            }
+        })
+    }
+    if (q.ID){
+        Voyages
+        .aggregate([
+            {
+              $search: {
+                "autocomplete": {
+                  "path": "ID",
+                  "query": q.ID
+                }
+              }
+            },
+            { $group: {_id: null, ID: {$addToSet: "$ID"}}},
+            { $unwind: "$ID" },
+            { $project: { _id: 0 }},
+            {
+              $limit: 5
+            },
+            {
+              $project: {
+                "_id": 0,
+                "ID": 1,
+              }
+            }
+        ])
+        .exec((err, docs) => {
+            if (err) {
+                res.json({
+                    success: false,
+                });
+            }
+            else {
+                res.json(docs)
+            }
+        })
+    }
+    if (q.shipName){
+        Voyages
+        .aggregate([
+            {
+              $search: {
+                "autocomplete": {
+                  "path": "shipName",
+                  "query": q.shipName
+                }
+              }
+            },
+            { $group: {_id: null, shipName: {$addToSet: "$shipName"}}},
+            { $unwind: "$shipName" },
+            { $project: { _id: 0 }},
+            {
+              $limit: 5
+            },
+            {
+              $project: {
+                "_id": 0,
+                "shipName": 1,
+              }
+            }
+        ])
+        .exec((err, docs) => {
+            if (err) {
+                res.json({
+                    success: false,
+                });
+            }
+            else {
+                res.json(docs)
+            }
+        })
+    }
+    if (q.depFrom){
+        Voyages
+        .aggregate([
+            {
+              $search: {
+                "autocomplete": {
+                  "path": "depFrom",
+                  "query": q.depFrom
+                }
+              }
+            },
+            { $group: {_id: null, depFrom: {$addToSet: "$depFrom"}}},
+            { $unwind: "$depFrom" },
+            { $project: { _id: 0 }},
+            {
+              $limit: 5
+            },
+            {
+              $project: {
+                "_id": 0,
+                "depFrom": 1,
+              }
+            }
+        ])
+        .exec((err, docs) => {
+            if (err) {
+                res.json({
+                    success: false,
+                });
+            }
+            else {
+                res.json(docs)
+            }
+        })
+    }
+    if (q.depTo){
+        Voyages
+        .aggregate([
+            {
+              $search: {
+                "autocomplete": {
+                  "path": "depTo",
+                  "query": q.depTo
+                }
+              }
+            },
+            { $group: {_id: null, depTo: {$addToSet: "$depTo"}}},
+            { $unwind: "$depTo" },
+            { $project: { _id: 0 }},
+            {
+              $limit: 5
+            },
+            {
+              $project: {
+                "_id": 0,
+                "depTo": 1,
+              }
+            }
+        ])
+        .exec((err, docs) => {
+            if (err) {
+                res.json({
+                    success: false,
+                });
+            }
+            else {
+                res.json(docs)
+            }
+        })
+    }
+    if (q.arrFrom){
+        Voyages
+        .aggregate([
+            {
+              $search: {
+                "autocomplete": {
+                  "path": "arrFrom",
+                  "query": q.arrFrom
+                }
+              }
+            },
+            { $group: {_id: null, arrFrom: {$addToSet: "$arrFrom"}}},
+            { $unwind: "$arrFrom" },
+            { $project: { _id: 0 }},
+            {
+              $limit: 5
+            },
+            {
+              $project: {
+                "_id": 0,
+                "arrFrom": 1,
+              }
+            }
+        ])
+        .exec((err, docs) => {
+            if (err) {
+                res.json({
+                    success: false,
+                });
+            }
+            else {
+                res.json(docs)
+            }
+        })
+    }
+    if (q.arrTo){
+        Voyages
+        .aggregate([
+            {
+              $search: {
+                "autocomplete": {
+                  "path": "arrTo",
+                  "query": q.arrTo
+                }
+              }
+            },
+            { $group: {_id: null, arrTo: {$addToSet: "$arrTo"}}},
+            { $unwind: "$arrTo" },
+            { $project: { _id: 0 }},
+            {
+              $limit: 5
+            },
+            {
+              $project: {
+                "_id": 0,
+                "arrTo": 1,
+              }
+            }
+        ])
+        .exec((err, docs) => {
+            if (err) {
+                res.json({
+                    success: false,
+                });
+            }
+            else {
+                res.json(docs)
+            }
+        })
+    }
+});
+
+var getDaysInMonth = function(month,year) {
+    return new Date(year, month, 0).getDate()
+}
+
 router.post("/search/", async (req, res) => {
     const q = req.query;
     let sortParam = {};
@@ -111,7 +430,6 @@ router.post("/search/", async (req, res) => {
         });
     }
 });
-
 
 router.get("/", async (req, res) => {
     const q = req.query;
