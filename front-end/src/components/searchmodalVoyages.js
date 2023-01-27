@@ -26,7 +26,9 @@ function SearchModalComp({showSearchModal, setShowSearchModal, setSearchLink, se
     const [depayeart, setDepayeart] = useState("")
     const [depamonthf, setDepamonthf] = useState("")
     const [depamontht, setDepamontht] = useState("")
-    const [suggestions, setSuggestions] = useState([])
+    const [suggestionsDep, setSuggestionsDep] = useState([])
+    const [suggestionsArr, setSuggestionsArr] = useState([])
+    const [suggestionsName, setSuggestionsName] = useState([])
 
     const filters=[
         {
@@ -228,25 +230,22 @@ function SearchModalComp({showSearchModal, setShowSearchModal, setSearchLink, se
         setPage(0)
     }
 
-    const renderMenu=()=>{
-        let templist=[]
-        suggestions.forEach((datapoint, idx)=>{
-            if(datapoint.departurePlace){
-                templist.push(datapoint.departurePlace)
-            }
-        })
-        console.log(templist)
-        return <div className="me-2" children={templist}/>
-    }
-
-    const suggest = async(templink) => {
+    const suggest = async(templink, area) => {
         axios
             .post(`${process.env.REACT_APP_URI}/voyages/suggest?${templink+""}`, {
                 params: {
                 },
             })
             .then((response)=>{
-                setSuggestions(response.data);
+                if(area=="Dep"){
+                    setSuggestionsDep(response.data);
+                }
+                else if(area=="Arr"){
+                    setSuggestionsArr(response.data);
+                }
+                else if(area=="Name"){
+                    setSuggestionsName(response.data);
+                }
             })
     }
 
@@ -267,14 +266,14 @@ function SearchModalComp({showSearchModal, setShowSearchModal, setSearchLink, se
                         <Col className="pt-2">
                             <Form className="d-flex" style={{ minWidth: "60%"}}>
                                 <Autocomplete
-                                    items={suggestions}
+                                    items={suggestionsDep}
                                     getItemValue={item => item.departurePlace}
                                     renderItem={(item, highlighted) =>
                                         <Form.Control className="pt-1 pb-1 cstm-modal-sugg" style={{backgroundColor: highlighted ? '#eee' : 'transparent', zIndex: '2'}}
                                             value={item.departurePlace}>
                                         </Form.Control>}
                                     value={depaPlace}
-                                    onChange={e => {setDepaPlace(e.target.value); suggest("departurePlace="+e.target.value);}}
+                                    onChange={e => {setDepaPlace(e.target.value); setSuggestionsDep([]); suggest("departurePlace="+e.target.value, "Dep"); }}
                                     onSelect={value => {setDepaPlace(value)}}
                                     wrapperProps={{className: "me-2", style : {width:"100%"} }}
                                     renderInput={props => {
@@ -284,7 +283,7 @@ function SearchModalComp({showSearchModal, setShowSearchModal, setSearchLink, se
                             </Form>
                             <Form className="d-flex" style={{ minWidth: "60%" }}>
                                 <Autocomplete
-                                    items={suggestions}
+                                    items={suggestionsArr}
                                     getItemValue={item => item.arrivalPlace}
                                     renderItem={(item, highlighted) =>
                                         <Form.Control className="pt-1 pb-1 cstm-modal-sugg" style={{backgroundColor: highlighted ? '#eee' : 'transparent', zIndex: '2'}}
@@ -292,7 +291,7 @@ function SearchModalComp({showSearchModal, setShowSearchModal, setSearchLink, se
                                         </Form.Control>
                                     }
                                     value={arriPlace}
-                                    onChange={e => {setArriPlace(e.target.value); suggest("arrivalPlace="+e.target.value);}}
+                                    onChange={e => { setArriPlace(e.target.value); setSuggestionsArr([]); suggest("arrivalPlace="+e.target.value, "Arr");}}
                                     onSelect={value => {setArriPlace(value)}}
                                     wrapperProps={{className: "me-2", style : {width:"100%"} }}
                                     renderInput={props => {
@@ -305,14 +304,14 @@ function SearchModalComp({showSearchModal, setShowSearchModal, setSearchLink, se
                             </Form>
                             <Form className="d-flex" style={{ width: "100%", minWidth: "60%" }}>   
                                 <Autocomplete
-                                    items={suggestions}
+                                    items={suggestionsName}
                                     getItemValue={item => item.shipName}
                                     renderItem={(item, highlighted) =>
                                         <Form.Control className="pt-1 pb-1 cstm-modal-sugg" style={{backgroundColor: highlighted ? '#eee' : 'transparent', zIndex: '2'}}
                                             value={item.shipName}>
                                         </Form.Control>}
                                     value={shiName}
-                                    onChange={e => {setShiName(e.target.value); suggest("shipName="+e.target.value);}}
+                                    onChange={e => {setShiName(e.target.value); setSuggestionsName([]); suggest("shipName="+e.target.value, "Name");}}
                                     onSelect={value => {setShiName(value)}}
                                     wrapperProps={{className: "me-2", style : {width:"100%"} }}
                                     renderInput={props => {
