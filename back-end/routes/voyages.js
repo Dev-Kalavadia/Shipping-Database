@@ -5,37 +5,6 @@ const Voyages = require("../schema/voyages");
 
 router.post("/suggest/", async (req, res)=>{
     const q = req.query;
-    if (q._id){
-        Voyages
-        .aggregate([
-            {
-              $search: {
-                "autocomplete": {
-                  "path": "_id",
-                  "query": q._id
-                }
-              }
-            },
-            {
-              $limit: 5
-            },
-            {
-              $project: {
-                "_id": 1,
-              }
-            }
-        ])
-        .exec((err, docs) => {
-            if (err) {
-                res.json({
-                    success: false,
-                });
-            }
-            else {
-                res.json(docs)
-            }
-        })
-    }
     if (q.departurePlace){
       Voyages
       .aggregate([
@@ -106,41 +75,6 @@ router.post("/suggest/", async (req, res)=>{
             }
         })
     }
-    if (q.ID){
-        Voyages
-        .aggregate([
-            {
-              $search: {
-                "autocomplete": {
-                  "path": "ID",
-                  "query": q.ID
-                }
-              }
-            },
-            { $group: {_id: null, ID: {$addToSet: "$ID"}}},
-            { $unwind: "$ID" },
-            { $project: { _id: 0 }},
-            {
-              $limit: 5
-            },
-            {
-              $project: {
-                "_id": 0,
-                "ID": 1,
-              }
-            }
-        ])
-        .exec((err, docs) => {
-            if (err) {
-                res.json({
-                    success: false,
-                });
-            }
-            else {
-                res.json(docs)
-            }
-        })
-    }
     if (q.shipName){
         Voyages
         .aggregate([
@@ -162,146 +96,6 @@ router.post("/suggest/", async (req, res)=>{
               $project: {
                 "_id": 0,
                 "shipName": 1,
-              }
-            }
-        ])
-        .exec((err, docs) => {
-            if (err) {
-                res.json({
-                    success: false,
-                });
-            }
-            else {
-                res.json(docs)
-            }
-        })
-    }
-    if (q.depFrom){
-        Voyages
-        .aggregate([
-            {
-              $search: {
-                "autocomplete": {
-                  "path": "depFrom",
-                  "query": q.depFrom
-                }
-              }
-            },
-            { $group: {_id: null, depFrom: {$addToSet: "$depFrom"}}},
-            { $unwind: "$depFrom" },
-            { $project: { _id: 0 }},
-            {
-              $limit: 5
-            },
-            {
-              $project: {
-                "_id": 0,
-                "depFrom": 1,
-              }
-            }
-        ])
-        .exec((err, docs) => {
-            if (err) {
-                res.json({
-                    success: false,
-                });
-            }
-            else {
-                res.json(docs)
-            }
-        })
-    }
-    if (q.depTo){
-        Voyages
-        .aggregate([
-            {
-              $search: {
-                "autocomplete": {
-                  "path": "depTo",
-                  "query": q.depTo
-                }
-              }
-            },
-            { $group: {_id: null, depTo: {$addToSet: "$depTo"}}},
-            { $unwind: "$depTo" },
-            { $project: { _id: 0 }},
-            {
-              $limit: 5
-            },
-            {
-              $project: {
-                "_id": 0,
-                "depTo": 1,
-              }
-            }
-        ])
-        .exec((err, docs) => {
-            if (err) {
-                res.json({
-                    success: false,
-                });
-            }
-            else {
-                res.json(docs)
-            }
-        })
-    }
-    if (q.arrFrom){
-        Voyages
-        .aggregate([
-            {
-              $search: {
-                "autocomplete": {
-                  "path": "arrFrom",
-                  "query": q.arrFrom
-                }
-              }
-            },
-            { $group: {_id: null, arrFrom: {$addToSet: "$arrFrom"}}},
-            { $unwind: "$arrFrom" },
-            { $project: { _id: 0 }},
-            {
-              $limit: 5
-            },
-            {
-              $project: {
-                "_id": 0,
-                "arrFrom": 1,
-              }
-            }
-        ])
-        .exec((err, docs) => {
-            if (err) {
-                res.json({
-                    success: false,
-                });
-            }
-            else {
-                res.json(docs)
-            }
-        })
-    }
-    if (q.arrTo){
-        Voyages
-        .aggregate([
-            {
-              $search: {
-                "autocomplete": {
-                  "path": "arrTo",
-                  "query": q.arrTo
-                }
-              }
-            },
-            { $group: {_id: null, arrTo: {$addToSet: "$arrTo"}}},
-            { $unwind: "$arrTo" },
-            { $project: { _id: 0 }},
-            {
-              $limit: 5
-            },
-            {
-              $project: {
-                "_id": 0,
-                "arrTo": 1,
               }
             }
         ])
@@ -415,7 +209,7 @@ router.post("/search/", async (req, res) => {
 					});
 				} else {
 					Voyages
-                        .find(searchfilter)
+            .find(searchfilter)
 						.countDocuments((err, count) => {
 							res.json({
 								docs,

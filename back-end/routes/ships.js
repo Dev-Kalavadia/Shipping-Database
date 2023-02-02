@@ -3,7 +3,44 @@ const router = express.Router();
 const mongoose = require("mongoose");
 const Ships = require("../schema/ships");
 
-
+router.post("/suggest/", (req, res) => {
+    const q = req.query;
+    if (q.name){
+      Ships
+      .aggregate([
+          {
+            $search: {
+              "autocomplete": {
+                "path": "name",
+                "query": q.name
+              }
+            }
+          },
+          { $group: {_id: null, name: {$addToSet: "$name"}}},
+          { $unwind: "$name" },
+          { $project: { _id: 0 }},
+          {
+            $limit: 3
+          },
+          {
+            $project: {
+              "_id": 0,
+              "name": 1,
+            }
+          }
+      ])
+      .exec((err, docs) => {
+            if (err) {
+                res.json({
+                    success: false,
+                });
+            }
+            else {
+                res.json(docs)
+            }
+      })
+   }
+})
 
 router.post("/search/", async (req, res) => {
     const q = req.query;

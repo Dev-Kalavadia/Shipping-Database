@@ -104,12 +104,12 @@ function Ships() {
             }
         },
     }, {
-        dataField: 'shipName',
+        dataField: 'name',
         text: 'Ship Name',
         headerFormatter: headerFormatter,
         headerEvents: {
             onClick: (e, column, columnIndex) => {
-                setSortBy('shipName');
+                setSortBy('name');
                 setPage(0);
                 if (sortType ==='asc'){
                     setSortType('desc');

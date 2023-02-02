@@ -3,6 +3,80 @@ const router = express.Router();
 const mongoose = require("mongoose");
 const Places = require("../schema/places");
 
+router.post("/suggest/", (req, res) => {
+    const q = req.query;
+    if (q.Name){
+      Places
+      .aggregate([
+          {
+            $search: {
+              "autocomplete": {
+                "path": "Name",
+                "query": q.Name
+              }
+            }
+          },
+          { $group: {_id: null, Name: {$addToSet: "$Name"}}},
+          { $unwind: "$Name" },
+          { $project: { _id: 0 }},
+          {
+            $limit: 5
+          },
+          {
+            $project: {
+              "_id": 0,
+              "Name": 1,
+            }
+          }
+      ])
+      .exec((err, docs) => {
+        if (err) {
+            res.json({
+                success: false,
+            });
+        }
+        else {
+            res.json(docs)
+        }
+      })
+  }
+    if (q.modernName){
+        Places
+        .aggregate([
+            {
+              $search: {
+                "autocomplete": {
+                  "path": "modernName",
+                  "query": q.modernName
+                }
+              }
+            },
+            { $group: {_id: null, modernName: {$addToSet: "$modernName"}}},
+            { $unwind: "$modernName" },
+            { $project: { _id: 0 }},
+            {
+              $limit: 5
+            },
+            {
+              $project: {
+                "_id": 0,
+                "modernName": 1,
+              }
+            }
+        ])
+        .exec((err, docs) => {
+            if (err) {
+                res.json({
+                    success: false,
+                });
+            }
+            else {
+                res.json(docs)
+            }
+        })
+    }
+})
+
 router.post("/search/", async (req, res) => {
     const q = req.query;
     let sortParam = {};
