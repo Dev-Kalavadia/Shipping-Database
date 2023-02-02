@@ -3,6 +3,20 @@ const router = express.Router();
 const mongoose = require("mongoose");
 const Places = require("../schema/places");
 
+router.get("/:id", (req, res) => {
+  const {id} = req.params
+  Places.find({Name:id}, (err, doc) => {
+      if (err) {
+        res.json({
+          success: false,
+        });
+      }
+      else {
+          res.json(doc)
+      }
+  })
+})
+
 router.post("/suggest/", (req, res) => {
     const q = req.query;
     if (q.Name){

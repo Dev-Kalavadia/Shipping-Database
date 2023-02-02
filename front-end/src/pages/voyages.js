@@ -3,6 +3,7 @@ import FooterComp from "../components/footer";
 import SearchBarComp from "../components/searchbar";
 import SearchModalComp from "../components/searchmodalVoyages";
 import HelpModalComp from "../components/helpmodal";
+import ExtraModalComp from "../components/extramodal";
 import "./voyages.css";
 import "../components/loader.scss";
 import React, { useEffect } from "react";
@@ -14,6 +15,12 @@ import Button from "react-bootstrap/Button";
 function headerFormatter(column, colIndex) {
     return (
       <a href="#" className="cstm-header-link">{column.text}</a>
+    );
+}
+
+function cellFormatter(cell, row) {
+    return ( 
+      <a href="#">{cell}</a>
     );
 }
 
@@ -29,6 +36,191 @@ function Voyages() {
     const [loading, setLoading] = useState(false);
     const [searchLink, setSearchLink] = useState("");
     const [isSearch, setIsSearch] = useState(false);
+    const [showExtraModal, setShowExtraModal] = useState(false);
+    const [extraData, setExtraData] = useState([])
+    const [extraState, setExtraState] = useState(0)
+    
+    const columns = [{
+        dataField: '_id',
+        text: 'Voyage Code',
+        headerFormatter: headerFormatter,
+        formatter: cellFormatter,
+        headerEvents: {
+            onClick: (e, column, columnIndex) => {
+                setSortBy('_id');
+                setPage(0);
+                if (sortType ==='asc'){
+                    setSortType('desc');
+                }
+                else {
+                    setSortType('asc');
+                }
+            }
+        },
+        events: {
+            onClick: (e, column, columnIndex, row, rowIndex) => {
+                extrainfoVoyages(row._id);
+            }
+        },
+    }, {
+        dataField: 'shipName',
+        text: 'Ship Name',
+        headerFormatter: headerFormatter,
+        headerEvents: {
+            onClick: (e, column, columnIndex) => {
+                setSortBy('shipName');
+                setPage(0);
+                if (sortType ==='asc'){
+                    setSortType('desc');
+                }
+                else {
+                    setSortType('asc');
+                }
+            }
+        },
+    }, {
+        dataField: 'ID',
+        text: 'Ship Code',
+        headerFormatter: headerFormatter,
+        formatter: cellFormatter,
+        headerEvents: {
+            onClick: (e, column, columnIndex) => {
+                setSortBy('ID');
+                setPage(0);
+                if (sortType ==='asc'){
+                    setSortType('desc');
+                }
+                else {
+                    setSortType('asc');
+                }
+            }
+        },
+        events: {
+            onClick: (e, column, columnIndex, row, rowIndex) => {
+                extrainfoShips(row.ID);
+            }   
+        },
+    }, {
+        dataField: 'departurePlace',
+        text: 'Departure Place',
+        headerFormatter: headerFormatter,
+        formatter: cellFormatter,
+        headerEvents: {
+            onClick: (e, column, columnIndex) => {
+                setSortBy('departurePlace');
+                setPage(0);
+                if (sortType ==='asc'){
+                    setSortType('desc');
+                }
+                else {
+                    setSortType('asc');
+                }
+            }
+        },
+        events: {
+            onClick: (e, column, columnIndex, row, rowIndex) => {
+                extrainfoPlaces(row.departurePlace);
+            }   
+        },
+    }, {
+        dataField: 'depCode',
+        text: 'Departure Place Code',
+        headerFormatter: headerFormatter,
+        formatter: cellFormatter,
+        headerEvents: {
+            onClick: (e, column, columnIndex) => {
+                setSortBy('depCode');
+                setPage(0);
+                if (sortType ==='asc'){
+                    setSortType('desc');
+                }
+                else {
+                    setSortType('asc');
+                }
+            }
+        },
+        events: {
+            onClick: (e, column, columnIndex, row, rowIndex) => {
+                extrainfoPlaces(row.departurePlace);
+            }   
+        },
+    }, {
+        dataField: 'departureDate',
+        text: 'Departure Date',
+        headerFormatter: headerFormatter,
+        headerEvents: {
+            onClick: (e, column, columnIndex) => {
+                setSortBy('departureDate');
+                setPage(0);
+                if (sortType ==='asc'){
+                    setSortType('desc');
+                }
+                else {
+                    setSortType('asc');
+                }
+            }
+        },
+    }, {
+        dataField: 'arrivalPlace',
+        text: 'Arrival Place',
+        headerFormatter: headerFormatter,
+        formatter: cellFormatter,
+        headerEvents: {
+            onClick: (e, column, columnIndex) => {
+                setSortBy('arrivalPlace');
+                setPage(0);
+                if (sortType ==='asc'){
+                    setSortType('desc');
+                }
+                else {
+                    setSortType('asc');
+                }
+            }
+        },
+        events: {
+            onClick: (e, column, columnIndex, row, rowIndex) => {
+                extrainfoPlaces(row.arrivalPlace);
+            }   
+        },
+    }, {
+        dataField: 'arrCode',
+        text: 'Arrival Place Code',
+        headerFormatter: headerFormatter,
+        formatter: cellFormatter,
+        headerEvents: {
+            onClick: (e, column, columnIndex) => {
+                setSortBy('arrCode');
+                setPage(0);
+                if (sortType ==='asc'){
+                    setSortType('desc');
+                }
+                else {
+                    setSortType('asc');
+                }
+            }
+        },
+        events: {
+            onClick: (e, column, columnIndex, row, rowIndex) => {
+                extrainfoPlaces(row.arrivalPlace);
+            }   
+        },
+    }, {
+        dataField: 'arrivalDate',
+        text: 'Arrival Date',
+        headerFormatter: headerFormatter,
+        headerEvents: {
+            onClick: (e, column, columnIndex) => {
+                setSortBy('arrivalDate');
+                setPage(0);
+                if (sortType ==='asc'){
+                    setSortType('desc');
+                }
+                else {
+                    setSortType('asc');
+                }
+            }
+        },
+    }];
 
     useEffect(() => {
         if(voyagesData.length==0){
@@ -100,153 +292,64 @@ function Voyages() {
             });
         }
 	}, [sortBy, sortType, searchLink]);
-    
-    const columns = [{
-        dataField: '_id',
-        text: 'Voyage Code',
-        headerFormatter: headerFormatter,
-        headerEvents: {
-            onClick: (e, column, columnIndex) => {
-                setSortBy('_id');
-                setPage(0);
-                if (sortType ==='asc'){
-                    setSortType('desc');
-                }
-                else {
-                    setSortType('asc');
-                }
-            }
-        },
-    }, {
-        dataField: 'shipName',
-        text: 'Ship Name',
-        headerFormatter: headerFormatter,
-        headerEvents: {
-            onClick: (e, column, columnIndex) => {
-                setSortBy('shipName');
-                setPage(0);
-                if (sortType ==='asc'){
-                    setSortType('desc');
-                }
-                else {
-                    setSortType('asc');
-                }
-            }
-        },
-    }, {
-        dataField: 'ID',
-        text: 'Ship Code',
-        headerFormatter: headerFormatter,
-        headerEvents: {
-            onClick: (e, column, columnIndex) => {
-                setSortBy('ID');
-                setPage(0);
-                if (sortType ==='asc'){
-                    setSortType('desc');
-                }
-                else {
-                    setSortType('asc');
-                }
-            }
-        },
-    }, {
-        dataField: 'departurePlace',
-        text: 'Departure Place',
-        headerFormatter: headerFormatter,
-        headerEvents: {
-            onClick: (e, column, columnIndex) => {
-                setSortBy('departurePlace');
-                setPage(0);
-                if (sortType ==='asc'){
-                    setSortType('desc');
-                }
-                else {
-                    setSortType('asc');
-                }
-            }
-        },
-    }, {
-        dataField: 'depCode',
-        text: 'Departure Place Code',
-        headerFormatter: headerFormatter,
-        headerEvents: {
-            onClick: (e, column, columnIndex) => {
-                setSortBy('depCode');
-                setPage(0);
-                if (sortType ==='asc'){
-                    setSortType('desc');
-                }
-                else {
-                    setSortType('asc');
-                }
-            }
-        },
-    }, {
-        dataField: 'departureDate',
-        text: 'Departure Date',
-        headerFormatter: headerFormatter,
-        headerEvents: {
-            onClick: (e, column, columnIndex) => {
-                setSortBy('departureDate');
-                setPage(0);
-                if (sortType ==='asc'){
-                    setSortType('desc');
-                }
-                else {
-                    setSortType('asc');
-                }
-            }
-        },
-    }, {
-        dataField: 'arrivalPlace',
-        text: 'Arrival Place',
-        headerFormatter: headerFormatter,
-        headerEvents: {
-            onClick: (e, column, columnIndex) => {
-                setSortBy('arrivalPlace');
-                setPage(0);
-                if (sortType ==='asc'){
-                    setSortType('desc');
-                }
-                else {
-                    setSortType('asc');
-                }
-            }
-        },
-    }, {
-        dataField: 'arrCode',
-        text: 'Arrival Place Code',
-        headerFormatter: headerFormatter,
-        headerEvents: {
-            onClick: (e, column, columnIndex) => {
-                setSortBy('arrCode');
-                setPage(0);
-                if (sortType ==='asc'){
-                    setSortType('desc');
-                }
-                else {
-                    setSortType('asc');
-                }
-            }
-        },
-    }, {
-        dataField: 'arrivalDate',
-        text: 'Arrival Date',
-        headerFormatter: headerFormatter,
-        headerEvents: {
-            onClick: (e, column, columnIndex) => {
-                setSortBy('arrivalDate');
-                setPage(0);
-                if (sortType ==='asc'){
-                    setSortType('desc');
-                }
-                else {
-                    setSortType('asc');
-                }
-            }
-        },
-    }];
 
+    const extrainfoVoyages = function (id) {
+        axios
+        .get(`${process.env.REACT_APP_URI}/voyages/${id}`, {
+            params: {
+            },
+        })
+        .then((response) => {
+            setShowExtraModal(true)
+            setExtraState(0)
+            if (response.data.arrivalDate) {
+                let [date1, time1] = response.data.arrivalDate.split("T")
+                response.data.arrivalDate = date1
+            } else {
+                response.data.arrivalDate = ""
+            }
+            if (response.data.departureDate) {
+                let [date2, time2] = response.data.departureDate.split("T")
+                response.data.departureDate = date2
+            } else {
+                response.data.departureDate = ""
+            }
+            let temp = Object.assign({}, response.data);
+            setExtraData(temp)
+        });
+    }
+
+    const extrainfoShips = function (id) {
+        axios
+        .get(`${process.env.REACT_APP_URI}/ships/${id}`, {
+            params: {
+            },
+        })
+        .then((response) => {
+            setShowExtraModal(true)
+            setExtraState(1)
+            if (response.data[0].otherNames) {
+                response.data[0].otherNames = response.data[0].otherNames.join(", ");
+            } else {
+                response.data[0].otherNames = ""
+            }
+            setExtraData(response.data[0])
+        });
+    }
+
+    const extrainfoPlaces = function (id) {
+        axios
+        .get(`${process.env.REACT_APP_URI}/places/${id}`, {
+            params: {
+            },
+        })
+        .then((response) => {
+            setShowExtraModal(true)
+            setExtraState(2)
+            setExtraData(response.data[0])
+        });
+    }
+    
     const loadMoreData = function () {
         if(!isSearch){
             axios
@@ -320,6 +423,7 @@ function Voyages() {
             <NavbarComp />
             {!loading && <SearchBarComp setShowSearchModal={setShowSearchModal} setShowHelpModal={setShowHelpModal}/>}
             {!loading && <SearchModalComp showSearchModal={showSearchModal} setShowSearchModal={setShowSearchModal} setSearchLink={setSearchLink} setPage={setPage} setSortBy={setSortBy} setIsSearch={setIsSearch}/>}
+            {!loading && <ExtraModalComp showExtraModal={showExtraModal} setShowExtraModal={setShowExtraModal} extraData={extraData} setExtraData={setExtraData} extraState={extraState}/>}
             {!loading && <HelpModalComp showHelpModal={showHelpModal} setShowHelpModal={setShowHelpModal}/>}
             {loading && <div className="d-flex justify-content-center cstm-holder"><ferry><chimney /><waves /></ferry></div>}
             {voyagesData!=0 && <div className="sub-heading-container">

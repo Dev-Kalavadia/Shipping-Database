@@ -3,6 +3,20 @@ const router = express.Router();
 const mongoose = require("mongoose");
 const Voyages = require("../schema/voyages");
 
+router.get("/:id", (req, res) => {
+  const {id} = req.params
+  Voyages.findById(id, (err, docs) => {
+      if (err) {
+        res.json({
+            success: false,
+        });
+      }
+      else {
+          res.json(docs)
+      }
+  })
+});
+
 router.post("/suggest/", async (req, res)=>{
     const q = req.query;
     if (q.departurePlace){

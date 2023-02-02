@@ -30,46 +30,6 @@ function Places() {
     const [searchLink, setSearchLink] = useState("");
     const [isSearch, setIsSearch] = useState(false);
 
-    useEffect(() => {
-        if(placesData.length==0){
-            setLoading(true)
-        }
-        if(!isSearch){
-            axios
-                .get(`${process.env.REACT_APP_URI}/places`, {
-                    params: {
-                        sortBy: sortBy,
-                        sortType : sortType,
-                        page : page,
-                    },
-                })
-                .then((response) => {
-                    console.log(response.data.docs)
-                    setLoading(false)
-                    setPlacesData(response.data.docs);
-                    setCount(response.data.count);
-                    if (response.data.count / 100 > page) {
-                        setPage(page + 1);
-                    }
-                });
-        }
-        else if (isSearch){
-            axios
-                .post(`${process.env.REACT_APP_URI}/places/search?${searchLink}&page=${page}&sortBy=${sortBy}&sortType=${sortType}`, {
-                    params: {
-                    },
-                })
-                .then((response) => {
-                    setLoading(false)
-                    setPlacesData(response.data.docs);
-                    setCount(response.data.count);
-                    if (response.data.count / 100 > page) {
-                        setPage(page + 1);
-                    }
-                });
-        }
-	}, [sortBy, sortType, searchLink]);
-    
     const columns = [{
         dataField: 'Name',
         text: 'Place Name',
@@ -232,6 +192,46 @@ function Places() {
         },
     }];
 
+    useEffect(() => {
+        if(placesData.length==0){
+            setLoading(true)
+        }
+        if(!isSearch){
+            axios
+                .get(`${process.env.REACT_APP_URI}/places`, {
+                    params: {
+                        sortBy: sortBy,
+                        sortType : sortType,
+                        page : page,
+                    },
+                })
+                .then((response) => {
+                    console.log(response.data.docs)
+                    setLoading(false)
+                    setPlacesData(response.data.docs);
+                    setCount(response.data.count);
+                    if (response.data.count / 100 > page) {
+                        setPage(page + 1);
+                    }
+                });
+        }
+        else if (isSearch){
+            axios
+                .post(`${process.env.REACT_APP_URI}/places/search?${searchLink}&page=${page}&sortBy=${sortBy}&sortType=${sortType}`, {
+                    params: {
+                    },
+                })
+                .then((response) => {
+                    setLoading(false)
+                    setPlacesData(response.data.docs);
+                    setCount(response.data.count);
+                    if (response.data.count / 100 > page) {
+                        setPage(page + 1);
+                    }
+                });
+        }
+	}, [sortBy, sortType, searchLink]);
+    
     const loadMoreData = function () {
         if(!isSearch){
             axios

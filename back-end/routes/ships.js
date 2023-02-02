@@ -3,6 +3,20 @@ const router = express.Router();
 const mongoose = require("mongoose");
 const Ships = require("../schema/ships");
 
+router.get("/:id", (req, res) => {
+    const {id} = req.params
+    Ships.find({'ID': id}, (err, doc) => {
+        if (err) {
+            res.json({
+                success: false,
+            });
+        }
+        else {
+            res.json(doc)
+        }
+    })
+})
+
 router.post("/suggest/", (req, res) => {
     const q = req.query;
     if (q.name){
